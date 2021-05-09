@@ -19,7 +19,7 @@ public class ProjetEntity implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
-	private String prjet_id;
+	private String projetId;
 	private String titre;
 	private String description;
 	private Date date_debut;
@@ -54,7 +54,7 @@ public class ProjetEntity implements Serializable {
 			List<Avancemen_ProjettEntity> avancementsProjet) {
 		super();
 		this.id = id;
-		this.prjet_id = prjet_id;
+		this.projetId = prjet_id;
 		this.titre = titre;
 		this.description = description;
 		this.date_debut = date_debut;
@@ -76,11 +76,11 @@ public class ProjetEntity implements Serializable {
 	}
 
 	public String getPrjet_id() {
-		return prjet_id;
+		return projetId;
 	}
 
 	public void setPrjet_id(String prjet_id) {
-		this.prjet_id = prjet_id;
+		this.projetId = prjet_id;
 	}
 
 	public String getTitre() {

@@ -26,6 +26,14 @@ public class AdminEntity extends UserEntity {
 
 	@Column
 	private String dept;
+	
+	
+	public AdminEntity() {
+		super();
+	}
+
+	
+	
 
 	public String getDept() {
 		return dept;
@@ -78,5 +86,6 @@ public class AdminEntity extends UserEntity {
 		this.managers = managers;
 	}
 
+	
 	
 }

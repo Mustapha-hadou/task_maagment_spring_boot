@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entities.AdminEntity;
 import com.example.demo.entities.ManagerEntity;
 import com.example.demo.entities.ProjetEntity;
+import com.example.demo.entities.UserEntity;
+import com.example.demo.repository.AdminRepository;
+import com.example.demo.repository.ManagerRepository;
 import com.example.demo.repository.ProjetRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.ProjetService;
@@ -27,6 +30,12 @@ public class ProjetServiceImpl implements ProjetService{
 	UserRepository userRepository;
 	
 	@Autowired
+	AdminRepository adminRepository;
+	
+	@Autowired
+	ManagerRepository managerRepository;
+	
+	@Autowired
     Utils util;
 	
 	@Override
@@ -42,8 +51,8 @@ public class ProjetServiceImpl implements ProjetService{
 	
 	@Override
 	public ProjetDto createProjet(ProjetDto projet, String email_admin, String email_manager) {
-		AdminEntity admin = (AdminEntity) userRepository.findByEmail(email_admin);
-		ManagerEntity Manager = (ManagerEntity) userRepository.findByEmail(email_manager);
+		AdminEntity admin = adminRepository.findByEmail(email_admin);
+		ManagerEntity Manager = managerRepository.findByEmail(email_manager);
 		
 		ModelMapper modelMapper=new ModelMapper();
         UserDto adminDto = modelMapper.map(admin,UserDto.class);
@@ -71,7 +80,7 @@ public class ProjetServiceImpl implements ProjetService{
 	@Override
 	public void deleteProjet(String projetId) {
 		ProjetEntity projet = projetRepository.findByProjetId(projetId);
-		if(projet == null ) throw new RuntimeException("Address Not Found");
+		if(projet == null ) throw new RuntimeException("Projet Not Found");
 		projetRepository.delete(projet);
 	}
 
