@@ -31,18 +31,17 @@ public class ProjetEntity implements Serializable {
 	@JoinColumn()
 	AdminEntity admin;
 	
-	@OneToMany(mappedBy = "projet",cascade = CascadeType.ALL)
-	List<TacheEntity> taches;
-	
+
 	@ManyToOne
 	@JoinColumn()
 	ManagerEntity manager;
 	
 	@OneToMany(mappedBy = "projet",cascade = CascadeType.ALL)
+	List<TacheEntity> taches;
+	
+	
+	@OneToMany(mappedBy = "projet",cascade = CascadeType.ALL)
 	List<Avancemen_ProjettEntity> avancementsProjet;
-	
-	
-	
 
 	public ProjetEntity() {
 		super();

@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 		userEntity.setEncryptepassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
 		userEntity.setUserId(util.generateStringId(32));
 		
-		UserEntity newuserEntity = userRepository.save(userEntity);
+		 userRepository.save(userEntity);
 		
 		
 	}

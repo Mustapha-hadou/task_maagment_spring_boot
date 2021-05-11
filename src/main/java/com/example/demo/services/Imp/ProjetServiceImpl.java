@@ -47,12 +47,12 @@ public class ProjetServiceImpl implements ProjetService{
 		
 		return projetsDto;
 	}
-
+     
 	
 	@Override
 	public ProjetDto createProjet(ProjetDto projet, String email_admin, String email_manager) {
 		AdminEntity admin = adminRepository.findByEmail(email_admin);
-		ManagerEntity Manager = managerRepository.findByEmail(email_manager);
+		UserEntity Manager = managerRepository.findByEmail(email_manager);
 		
 		ModelMapper modelMapper=new ModelMapper();
         UserDto adminDto = modelMapper.map(admin,UserDto.class);
@@ -82,6 +82,36 @@ public class ProjetServiceImpl implements ProjetService{
 		ProjetEntity projet = projetRepository.findByProjetId(projetId);
 		if(projet == null ) throw new RuntimeException("Projet Not Found");
 		projetRepository.delete(projet);
+	}
+
+
+	@Override
+	public List<ProjetDto> getProjetManager(String manager_id) {
+		
+		UserEntity manager=userRepository.findByUserId(manager_id);
+		
+		List<ProjetEntity> projetsEntity = projetRepository.findByManager(manager);
+		
+		Type listeType = new TypeToken<List<ProjetDto>>() {}.getType();
+		List<ProjetDto> projetsDto = new ModelMapper().map(projetsEntity,listeType);		
+		
+		
+		return projetsDto;
+	}
+
+
+	@Override
+	public List<ProjetDto> getProjetAdmin(String admin_id) {
+		
+		UserEntity admin=userRepository.findByUserId(admin_id);
+
+	List<ProjetEntity> projetsEntity = projetRepository.findByAdmin(admin);
+		
+		Type listeType = new TypeToken<List<ProjetDto>>() {}.getType();
+		List<ProjetDto> projetsDto = new ModelMapper().map(projetsEntity,listeType);		
+		
+		
+		return projetsDto;
 	}
 
 }

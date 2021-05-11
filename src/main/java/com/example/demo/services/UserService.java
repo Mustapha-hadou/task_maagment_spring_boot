@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.example.demo.sherd.dto.UserDto;
 
+
 public interface UserService extends UserDetailsService {
 
 	void createUser(UserDto userDto);

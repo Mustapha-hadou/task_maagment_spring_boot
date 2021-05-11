@@ -19,13 +19,27 @@ public class ProjetDto {
 	private UserDto admin;
 	private UserDto manager;
 	private List<Avancemen_ProjettDto> avancementsProjet;
-	//private List<TacheDto> taches;
+	private List<UserDto> employes;
+
+	private List<TacheDto> taches;
 	
 	
-	
+	public List<TacheDto> getTaches() {
+		return taches;
+	}
+	public void setTaches(List<TacheDto> taches) {
+		this.taches = taches;
+	}
+	public List<UserDto> getEmployes() {
+		return employes;
+	}
+	public void setEmployes(List<UserDto> employes) {
+		this.employes = employes;
+	}
 	public UserDto getAdmin() {
 		return admin;
 	}
+
 	public void setAdmin(UserDto admin) {
 		this.admin = admin;
 	}

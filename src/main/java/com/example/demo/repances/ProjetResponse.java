@@ -1,6 +1,11 @@
 package com.example.demo.repances;
 
 import java.util.Date;
+import java.util.List;
+
+import com.example.demo.sherd.dto.Avancemen_ProjettDto;
+import com.example.demo.sherd.dto.TacheDto;
+import com.example.demo.sherd.dto.UserDto;
 
 public class ProjetResponse {
 	
@@ -11,6 +16,30 @@ public class ProjetResponse {
 	private Date date_fin;
 	private String status;
 	private String document;
+	private List<Avancemen_ProjettResponse> avancementsProjet;
+	private List<UserRepance> employes;
+
+	private List<TacheResponse> taches;
+	
+	
+	public List<Avancemen_ProjettResponse> getAvancementsProjet() {
+		return avancementsProjet;
+	}
+	public void setAvancementsProjet(List<Avancemen_ProjettResponse> avancementsProjet) {
+		this.avancementsProjet = avancementsProjet;
+	}
+	public List<UserRepance> getEmployes() {
+		return employes;
+	}
+	public void setEmployes(List<UserRepance> employes) {
+		this.employes = employes;
+	}
+	public List<TacheResponse> getTaches() {
+		return taches;
+	}
+	public void setTaches(List<TacheResponse> taches) {
+		this.taches = taches;
+	}
 	public String getPrjet_id() {
 		return prjet_id;
 	}

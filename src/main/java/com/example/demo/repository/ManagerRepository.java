@@ -4,11 +4,11 @@ package com.example.demo.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.entities.ManagerEntity;
+import com.example.demo.entities.UserEntity;
 
 
 @Repository
-public interface ManagerRepository extends CrudRepository<ManagerEntity, Long>{
+public interface ManagerRepository extends CrudRepository<UserEntity, Long>{
 
-	ManagerEntity findByEmail(String email);
+	UserEntity findByEmail(String email);
 }
