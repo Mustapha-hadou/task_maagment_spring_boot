@@ -1,5 +1,7 @@
 package com.example.demo.controllers;
 
+import java.security.Principal;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,11 +38,11 @@ public class UserController {
 	
 	
 	@PostMapping
-	public void createUser(@RequestBody UesrRequest userRequest) {
+	public void createUser(@RequestBody UesrRequest userRequest,Principal principal) {
 		
 		UserDto userDto = new UserDto();
 		BeanUtils.copyProperties(userRequest, userDto);
-		userService.createUser(userDto);
+		userService.createUser(userDto,principal.getName());
 		
 	}
 	

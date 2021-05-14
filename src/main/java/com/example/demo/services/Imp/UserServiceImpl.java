@@ -1,5 +1,6 @@
 package com.example.demo.services.Imp;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,9 +9,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.example.demo.entities.AdminEntity;
+import com.example.demo.entities.EmployeEntity;
+import com.example.demo.entities.ManagerEntity;
 import com.example.demo.entities.UserEntity;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.UserService;
@@ -29,8 +35,7 @@ public class UserServiceImpl implements UserService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
     
 	@Override
-	public void createUser(UserDto userDto) {
-		
+	public void createUser(UserDto userDto,String email) {
         UserEntity checkuser =  userRepository.findByEmail(userDto.getEmail());
 	    if(checkuser != null) throw new RuntimeException("cet utilisqteur existe deja dans la base de donnes");
 		
@@ -38,8 +43,30 @@ public class UserServiceImpl implements UserService {
 		BeanUtils.copyProperties(userDto, userEntity);
 		userEntity.setEncryptepassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
 		userEntity.setUserId(util.generateStringId(32));
+		if(userEntity.getRole().equals("ADMIN")) {	
+			ModelMapper modelMapper=new ModelMapper();
+			AdminEntity adminEntity = modelMapper.map(userEntity,AdminEntity.class);
+			userRepository.save(adminEntity);
+		}
+		if(userEntity.getRole().equals("MANAGER")) {
+			
+			AdminEntity admin = (AdminEntity) userRepository.findByEmail(email);
+			ModelMapper modelMapper=new ModelMapper();
+			
+	        UserDto adminDto = modelMapper.map(admin,UserDto.class);
+			ManagerEntity managerEntity = modelMapper.map(userEntity,ManagerEntity.class);
+			
+			managerEntity.setAdmin(admin);
+			userRepository.save(managerEntity);
+		}
+		if (userEntity.getRole().equals("EMPLOYEE")) {
+			ModelMapper modelMapper=new ModelMapper();
+			EmployeEntity employeEntity = modelMapper.map(userEntity,EmployeEntity.class);
+			userRepository.save(employeEntity);
+		}
 		
-		 userRepository.save(userEntity);
+		
+		 
 		
 		
 	}
@@ -96,6 +123,7 @@ public class UserServiceImpl implements UserService {
 		userRepository.delete(userEntity);
 		
 	}
+
 	
 	
 

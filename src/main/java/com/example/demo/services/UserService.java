@@ -2,6 +2,8 @@ package com.example.demo.services;
 
 
 
+import java.security.Principal;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.example.demo.sherd.dto.UserDto;
@@ -9,7 +11,7 @@ import com.example.demo.sherd.dto.UserDto;
 
 public interface UserService extends UserDetailsService {
 
-	void createUser(UserDto userDto);
+	void createUser(UserDto userDto,String email);
 	UserDto getUser(String email);
 	UserDto getUserByUserId(String userid);
 	UserDto UpdateUser(String id,UserDto userDto);

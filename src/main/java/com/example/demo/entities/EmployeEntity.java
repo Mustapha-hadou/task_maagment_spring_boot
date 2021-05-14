@@ -49,6 +49,10 @@ public class EmployeEntity extends UserEntity {
 		this.admin = admin;
 		this.taches = taches;
 	}
+
+	public EmployeEntity() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 	

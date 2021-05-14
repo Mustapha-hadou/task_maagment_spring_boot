@@ -11,8 +11,6 @@ import com.example.demo.entities.AdminEntity;
 import com.example.demo.entities.ManagerEntity;
 import com.example.demo.entities.ProjetEntity;
 import com.example.demo.entities.UserEntity;
-import com.example.demo.repository.AdminRepository;
-import com.example.demo.repository.ManagerRepository;
 import com.example.demo.repository.ProjetRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.ProjetService;
@@ -29,11 +27,7 @@ public class ProjetServiceImpl implements ProjetService{
 	@Autowired
 	UserRepository userRepository;
 	
-	@Autowired
-	AdminRepository adminRepository;
 	
-	@Autowired
-	ManagerRepository managerRepository;
 	
 	@Autowired
     Utils util;
@@ -51,8 +45,8 @@ public class ProjetServiceImpl implements ProjetService{
 	
 	@Override
 	public ProjetDto createProjet(ProjetDto projet, String email_admin, String email_manager) {
-		AdminEntity admin = adminRepository.findByEmail(email_admin);
-		UserEntity Manager = managerRepository.findByEmail(email_manager);
+		AdminEntity admin = (AdminEntity) userRepository.findByEmail(email_admin);
+		UserEntity Manager = userRepository.findByEmail(email_manager);
 		
 		ModelMapper modelMapper=new ModelMapper();
         UserDto adminDto = modelMapper.map(admin,UserDto.class);
