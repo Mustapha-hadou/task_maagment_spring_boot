@@ -22,6 +22,20 @@ public class ManagerEntity extends UserEntity {
 	
 	@OneToMany(mappedBy = "manager",cascade = CascadeType.ALL)
 	List<ProjetEntity> projets;
+	
+	@OneToMany(mappedBy = "manager",cascade = CascadeType.ALL)
+	List<MessageEntity> messages;
+	
+	
+	
+
+	public List<MessageEntity> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<MessageEntity> messages) {
+		this.messages = messages;
+	}
 
 	public ManagerEntity() {
 		super();

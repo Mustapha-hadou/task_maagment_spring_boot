@@ -28,6 +28,7 @@ public class AdminEntity extends UserEntity {
 	private String dept;
 	
 	
+	
 	public AdminEntity() {
 		super();
 	}
@@ -76,6 +77,10 @@ public class AdminEntity extends UserEntity {
 	@OneToMany(mappedBy = "admin",cascade = CascadeType.ALL)
 	List<ManagerEntity> managers;
 
+	@OneToMany(mappedBy = "admin",cascade = CascadeType.ALL)
+	List<MessageEntity> messages;
+	
+	
 	public AdminEntity(long id, String userId, String nom, String prenom, String email, String telephone, int age,
 			String encryptepassword, String emailVerificationToken, Boolean emailVerificationStatus, String role,
 			List<EmployeEntity> employes, List<ProjetEntity> projets, List<ManagerEntity> managers) {

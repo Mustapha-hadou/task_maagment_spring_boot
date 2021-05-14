@@ -3,6 +3,7 @@ package com.example.demo.secuirity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.servlet.FilterChain;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -44,7 +46,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			UserLoginRequest creds = new ObjectMapper().readValue(req.getInputStream(), UserLoginRequest.class);
 
 			return authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>()));
+					new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), (Collection<? extends GrantedAuthority>) new ArrayList<>()));
 
 		} catch (IOException e) {
 			throw new RuntimeException(e);
