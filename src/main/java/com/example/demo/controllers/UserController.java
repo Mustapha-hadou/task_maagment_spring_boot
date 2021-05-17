@@ -1,9 +1,17 @@
 package com.example.demo.controllers;
 
+import java.io.Console;
+import java.lang.reflect.Type;
 import java.security.Principal;
+import java.util.List;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.repances.ProjetResponse;
 import com.example.demo.repances.UserRepance;
 import com.example.demo.requests.UesrRequest;
 import com.example.demo.services.UserService;
+import com.example.demo.sherd.dto.ProjetDto;
 import com.example.demo.sherd.dto.UserDto;
 
 @RestController
@@ -36,13 +46,26 @@ public class UserController {
 		return userReponse;
 	}
 	
+	@GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<UserRepance>>getUsers(){
+		List<UserDto> users = userService.getAllUsers();
+		Type listeType = new TypeToken<List<UserRepance>>() {}.getType();
+		List<UserRepance> usersResponse = new ModelMapper().map(users,listeType);
+		return new ResponseEntity<List<UserRepance>>(usersResponse , HttpStatus.OK);
+	}
+	
 	
 	@PostMapping
 	public void createUser(@RequestBody UesrRequest userRequest,Principal principal) {
 		
 		UserDto userDto = new UserDto();
 		BeanUtils.copyProperties(userRequest, userDto);
-		userService.createUser(userDto,principal.getName());
+		if(principal != null) {
+			userService.createUser(userDto,principal.getName());
+		}else {
+			userService.createUser(userDto);
+		}
+		
 		
 	}
 	
@@ -62,7 +85,7 @@ public class UserController {
 	
 	@DeleteMapping(path="/{id}")
 	public void deleteUser(@PathVariable String id) {
-		userService.deleteUser(id);;
+		userService.deleteUser(id);
 	}
 
 }
