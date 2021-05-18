@@ -27,6 +27,7 @@ import com.example.demo.repances.ProjetResponse;
 import com.example.demo.repances.TacheResponse;
 import com.example.demo.repances.UserRepance;
 import com.example.demo.requests.ProjetRequest;
+import com.example.demo.requests.TacheRequest;
 import com.example.demo.services.AvancementProjetService;
 import com.example.demo.services.AvancementTacheService;
 import com.example.demo.services.ProjetService;
@@ -60,20 +61,15 @@ public class ProjetController {
 		return new ResponseEntity<List<ProjetResponse>>(projetsResponse , HttpStatus.OK);
 	}
 	
-	@PostMapping(
-            consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity storeProjet(@RequestBody ProjetRequest projetRequest,Principal principal,Principal principal2){
-
-        ModelMapper modelMapper=new ModelMapper();
-
-        ProjetDto projetDto=modelMapper.map(projetRequest,ProjetDto.class);
-        ProjetDto createProjet=projetService.createProjet(projetDto,principal.getName(),principal2.getName());
-
-        ProjetResponse newProjet=modelMapper.map(createProjet,ProjetResponse.class);
-
-        return new ResponseEntity(newProjet,HttpStatus.CREATED);
-    }
+	@PostMapping(path="/{idManager}")
+	public void createProjet(@RequestBody ProjetRequest projetRequest,Principal principal,@PathVariable  Long idManager) {	
+		
+		Type listType=new TypeToken<ProjetDto>() {}.getType();
+		ProjetDto  projetDto=new ModelMapper().map(projetRequest,listType);
+		
+		projetService.createProjet(projetDto,principal.getName(),idManager);
+		System.out.println(principal.getName() + " " +idManager);
+	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<ProjetResponse> getOneProjet(@PathVariable(name="id") String projetId) {

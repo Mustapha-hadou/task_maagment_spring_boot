@@ -2,20 +2,25 @@ package com.example.demo.services.Imp;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.AdminEntity;
 import com.example.demo.entities.ManagerEntity;
 import com.example.demo.entities.ProjetEntity;
+import com.example.demo.entities.TacheEntity;
 import com.example.demo.entities.UserEntity;
 import com.example.demo.repository.ProjetRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.ProjetService;
 import com.example.demo.sherd.Utils;
 import com.example.demo.sherd.dto.ProjetDto;
+import com.example.demo.sherd.dto.TacheDto;
 import com.example.demo.sherd.dto.UserDto;
 
 @Service
@@ -44,22 +49,34 @@ public class ProjetServiceImpl implements ProjetService{
      
 	
 	@Override
-	public ProjetDto createProjet(ProjetDto projet, String email_admin, String email_manager) {
-		AdminEntity admin = (AdminEntity) userRepository.findByEmail(email_admin);
-		UserEntity Manager = userRepository.findByEmail(email_manager);
-		
-		ModelMapper modelMapper=new ModelMapper();
-        UserDto adminDto = modelMapper.map(admin,UserDto.class);
-        UserDto managerDto = modelMapper.map(Manager,UserDto.class);
-        
-        projet.setPrjet_id(util.generateStringId(30));
-        projet.setAdmin(adminDto);
-        projet.setManager(managerDto);
+	public void createProjet(ProjetDto projetDto,String email,Long idManager) {
 
-        ProjetEntity proejtEntity=modelMapper.map(projet,ProjetEntity.class);
-        ProjetEntity newProjet=projetRepository.save(proejtEntity);
-        ProjetDto projetDto=modelMapper.map(newProjet,ProjetDto.class);
-        return projetDto;
+		UserEntity admin =userRepository.findByEmail(email);		
+
+		
+		Type listType=new TypeToken<UserDto>() {}.getType();
+		UserDto adminDto=new ModelMapper().map(admin,listType);
+		
+		
+        Optional<UserEntity> manager=userRepository.findById(idManager);	
+        
+		UserDto managerDto=new ModelMapper().map(manager,listType);
+
+		
+		System.out.println(adminDto.getEmail() + " h" + managerDto.getUserId());
+		
+		projetDto.setAdmin(adminDto);
+		projetDto.setManager(managerDto);
+		
+ 
+		ProjetEntity projetEntity = new ProjetEntity();
+		BeanUtils.copyProperties(projetDto, projetEntity);	
+		
+		projetEntity.setPrjet_id(util.generateStringId(32));
+		
+		
+		projetRepository.save(projetEntity);
+		
 	}
 
 	@Override

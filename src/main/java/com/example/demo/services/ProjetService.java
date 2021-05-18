@@ -4,12 +4,13 @@ import java.util.List;
 
 
 import com.example.demo.sherd.dto.ProjetDto;
+import com.example.demo.sherd.dto.TacheDto;
 
 
 public interface ProjetService {
 	
 	List<ProjetDto> getAllProjets();
-	ProjetDto createProjet(ProjetDto projet, String email_admin , String email_manager);
+	void createProjet(ProjetDto projetDto,String email,Long idManager);
 	ProjetDto getProjet(String projetId);
 	List<ProjetDto> getProjetManager(String manager_id);
 	List<ProjetDto> getProjetAdmin(String admin_id);

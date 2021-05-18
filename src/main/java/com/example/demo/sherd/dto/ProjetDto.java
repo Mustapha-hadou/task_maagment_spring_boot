@@ -19,22 +19,32 @@ public class ProjetDto {
 	private UserDto admin;
 	private UserDto manager;
 	private List<Avancemen_ProjettDto> avancementsProjet;
-	private List<UserDto> employes;
 
 	private List<TacheDto> taches;
 	
 	
+	
+	
+	
+	
+	public ProjetDto(long id, String prjet_id, String titre, String description, Date date_debut, Date date_fin, String status,
+			UserDto admin, UserDto manager) {
+		super();
+		this.id = id;
+		this.prjet_id = prjet_id;
+		this.titre = titre;
+		this.description = description;
+		this.date_debut = date_debut;
+		this.date_fin = date_fin;
+		this.status = status;
+		this.admin = admin;
+		this.manager = manager;
+	}
 	public List<TacheDto> getTaches() {
 		return taches;
 	}
 	public void setTaches(List<TacheDto> taches) {
 		this.taches = taches;
-	}
-	public List<UserDto> getEmployes() {
-		return employes;
-	}
-	public void setEmployes(List<UserDto> employes) {
-		this.employes = employes;
 	}
 	public UserDto getAdmin() {
 		return admin;
