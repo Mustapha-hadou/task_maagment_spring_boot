@@ -16,8 +16,8 @@ public class TacheDto {
 	private Date date_debut;
 	private Date date_fin;
 	private String status;
-	private UserDto employe;
-	private UserDto manager;
+	private EmployeDto employe;
+	private ManagerDto manager;
 	private ProjetDto projet;
 	private List<AvancementTacheDto> liste;	
 
@@ -33,7 +33,7 @@ public class TacheDto {
 		// TODO Auto-generated constructor stub
 	}
 	public TacheDto(long id, String tache_Id, String titre, String description, Date date_debut, Date date_fin,
-			String status, UserDto employe, UserDto manager, ProjetDto projet) {
+			String status, EmployeDto employe, ManagerDto manager, ProjetDto projet) {
 		super();
 		Id = id;
 		this.tache_Id = tache_Id;
@@ -54,16 +54,16 @@ public class TacheDto {
 	public void setTache_Id(String tache_Id) {
 		this.tache_Id = tache_Id;
 	}
-	public UserDto getEmploye() {
+	public EmployeDto getEmploye() {
 		return employe;
 	}
-	public void setEmploye(UserDto employe) {
+	public void setEmploye(EmployeDto employe) {
 		this.employe = employe;
 	}
-	public UserDto getManager() {
+	public ManagerDto getManager() {
 		return manager;
 	}
-	public void setManager(UserDto manager) {
+	public void setManager(ManagerDto manager) {
 		this.manager = manager;
 	}
 	public ProjetDto getProjet() {

@@ -19,6 +19,8 @@ import com.example.demo.repository.ProjetRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.ProjetService;
 import com.example.demo.sherd.Utils;
+import com.example.demo.sherd.dto.AdminDto;
+import com.example.demo.sherd.dto.ManagerDto;
 import com.example.demo.sherd.dto.ProjetDto;
 import com.example.demo.sherd.dto.TacheDto;
 import com.example.demo.sherd.dto.UserDto;
@@ -47,33 +49,21 @@ public class ProjetServiceImpl implements ProjetService{
 		return projetsDto;
 	}
      
-	
 	@Override
-	public void createProjet(ProjetDto projetDto,String email,Long idManager) {
+	public void createProjet(ProjetDto projetDto,String email,String idManager) {
 
-		UserEntity admin =userRepository.findByEmail(email);		
+		AdminEntity admin =(AdminEntity) userRepository.findByEmail(email);		
 
-		
-		Type listType=new TypeToken<UserDto>() {}.getType();
-		UserDto adminDto=new ModelMapper().map(admin,listType);
-		
-		
-        Optional<UserEntity> manager=userRepository.findById(idManager);	
+		ManagerEntity manager=(ManagerEntity) userRepository.findByUserId(idManager);	
         
-		UserDto managerDto=new ModelMapper().map(manager,listType);
+		
+		Type listType2=new TypeToken<ProjetEntity>() {}.getType();
+		ProjetEntity projetEntity=new ModelMapper().map(projetDto,listType2);
+		
+		projetEntity.setAdmin(admin);
+		projetEntity.setManager(manager);		
 
-		
-		System.out.println(adminDto.getEmail() + " h" + managerDto.getUserId());
-		
-		projetDto.setAdmin(adminDto);
-		projetDto.setManager(managerDto);
-		
- 
-		ProjetEntity projetEntity = new ProjetEntity();
-		BeanUtils.copyProperties(projetDto, projetEntity);	
-		
-		projetEntity.setPrjet_id(util.generateStringId(32));
-		
+		projetEntity.setPrjet_id(util.generateStringId(32));	
 		
 		projetRepository.save(projetEntity);
 		

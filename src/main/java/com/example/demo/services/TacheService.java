@@ -7,7 +7,7 @@ import com.example.demo.sherd.dto.TacheDto;
 
 public interface TacheService {
 
-	void createTache(TacheDto tacheDto,String email,Long idEmploye,Long idProjet);
+	void createTache(TacheDto tacheDto,String email,String idEmploye,String idProjet);
 	
 	List<TacheDto> getTacheByidProjet(int idProjet);
 	

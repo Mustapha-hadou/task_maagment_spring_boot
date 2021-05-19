@@ -62,7 +62,7 @@ public class ProjetController {
 	}
 	
 	@PostMapping(path="/{idManager}")
-	public void createProjet(@RequestBody ProjetRequest projetRequest,Principal principal,@PathVariable  Long idManager) {	
+	public void createProjet(@RequestBody ProjetRequest projetRequest,Principal principal,@PathVariable String idManager) {	
 		
 		Type listType=new TypeToken<ProjetDto>() {}.getType();
 		ProjetDto  projetDto=new ModelMapper().map(projetRequest,listType);

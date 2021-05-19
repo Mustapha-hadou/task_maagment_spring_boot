@@ -10,7 +10,7 @@ import com.example.demo.sherd.dto.TacheDto;
 public interface ProjetService {
 	
 	List<ProjetDto> getAllProjets();
-	void createProjet(ProjetDto projetDto,String email,Long idManager);
+	void createProjet(ProjetDto projetDto,String email,String idManager);
 	ProjetDto getProjet(String projetId);
 	List<ProjetDto> getProjetManager(String manager_id);
 	List<ProjetDto> getProjetAdmin(String admin_id);

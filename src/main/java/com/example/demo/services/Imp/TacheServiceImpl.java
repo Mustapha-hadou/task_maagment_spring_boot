@@ -10,6 +10,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entities.EmployeEntity;
+import com.example.demo.entities.ManagerEntity;
 import com.example.demo.entities.ProjetEntity;
 import com.example.demo.entities.TacheEntity;
 import com.example.demo.entities.UserEntity;
@@ -18,6 +20,8 @@ import com.example.demo.repository.TacheRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.TacheService;
 import com.example.demo.sherd.Utils;
+import com.example.demo.sherd.dto.EmployeDto;
+import com.example.demo.sherd.dto.ManagerDto;
 import com.example.demo.sherd.dto.ProjetDto;
 import com.example.demo.sherd.dto.TacheDto;
 import com.example.demo.sherd.dto.UserDto;
@@ -28,8 +32,6 @@ public class TacheServiceImpl implements TacheService{
 
 	@Autowired
 	TacheRepository tacheRepository;
-
-	
 	
 	@Autowired
 	UserRepository userRepository;
@@ -41,37 +43,26 @@ public class TacheServiceImpl implements TacheService{
 	 @Autowired
 	 Utils util;
 	    
-	
+
 	@Override
-	public void createTache(TacheDto tacheDto,String email,Long idEmploye,Long idProjet) {
+	public void createTache(TacheDto tacheDto,String email,String idEmploye,String idProjet) {
 
-		UserEntity manager=userRepository.findByEmail(email);		
-
+		ManagerEntity manager=(ManagerEntity) userRepository.findByEmail(email);		
 		
-		Type listType=new TypeToken<UserDto>() {}.getType();
-		UserDto managerDto=new ModelMapper().map(manager,listType);
+        EmployeEntity employe=(EmployeEntity) userRepository.findByUserId(idEmploye);
+
+        ProjetEntity projet=projetRepository.findByProjetId(idProjet);
 		
 		
-        Optional<UserEntity> employe=userRepository.findById(idEmploye);	
-
-		UserDto employeDto=new ModelMapper().map(employe,listType);
-
-        Optional<ProjetEntity> projet=projetRepository.findById(idProjet);
-
-		Type listTypeP=new TypeToken<ProjetDto>() {}.getType();
-		ProjetDto projetDto=new ModelMapper().map(projet,listTypeP);
-
 		
-        tacheDto.setProjet(projetDto);
-		tacheDto.setManager(managerDto);
-		tacheDto.setEmploye(employeDto);
-		
+		Type listTypePRo=new TypeToken<TacheEntity>() {}.getType();
+		TacheEntity tacheEntity=new ModelMapper().map(tacheDto,listTypePRo);
  
-		TacheEntity tacheEntity = new TacheEntity();
-		BeanUtils.copyProperties(tacheDto, tacheEntity);	
+		tacheEntity.setProjet(projet);
+		tacheEntity.setManager(manager);
+		tacheEntity.setEmployee(employe);
 		
 		tacheEntity.setTache_id(util.generateStringId(32));
-		
 		
 		tacheRepository.save(tacheEntity);
 		

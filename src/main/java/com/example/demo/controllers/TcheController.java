@@ -53,11 +53,11 @@ public class TcheController {
 	}
 	
 	@PostMapping(path="/{idEmploye}/{idProjet}")
-	public void createTache(@RequestBody TacheRequest tacheRequest,Principal principal,@PathVariable  Long idEmploye,@PathVariable Long idProjet) {	
+	public void createTache(@RequestBody TacheRequest tacheRequest,Principal principal,@PathVariable  String idEmploye,@PathVariable String idProjet) {	
 		
 		Type listType=new TypeToken<TacheDto>() {}.getType();
 		TacheDto  tacheDto=new ModelMapper().map(tacheRequest,listType);
-		
+		System.out.print(principal.getName());
 		tacheService.createTache(tacheDto,principal.getName(),idEmploye,idProjet);
 		
 	}

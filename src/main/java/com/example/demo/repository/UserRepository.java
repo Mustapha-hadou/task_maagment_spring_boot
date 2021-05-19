@@ -9,9 +9,6 @@ import com.example.demo.entities.UserEntity;
 public interface UserRepository extends  CrudRepository<UserEntity, Long> {
 	
 	UserEntity findByEmail(String email);
-	UserEntity findByUserId(String id);
-
-	
-	
+	UserEntity findByUserId(String id);	
 
 }

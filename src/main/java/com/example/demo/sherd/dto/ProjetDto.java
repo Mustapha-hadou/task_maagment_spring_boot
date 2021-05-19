@@ -16,8 +16,8 @@ public class ProjetDto {
 	private Date date_fin;
 	private String status;
 	private String document;
-	private UserDto admin;
-	private UserDto manager;
+	private AdminDto admin;
+	private ManagerDto manager;
 	private List<Avancemen_ProjettDto> avancementsProjet;
 
 	private List<TacheDto> taches;
@@ -28,7 +28,7 @@ public class ProjetDto {
 	
 	
 	public ProjetDto(long id, String prjet_id, String titre, String description, Date date_debut, Date date_fin, String status,
-			UserDto admin, UserDto manager) {
+			AdminDto admin, ManagerDto manager) {
 		super();
 		this.id = id;
 		this.prjet_id = prjet_id;
@@ -46,17 +46,17 @@ public class ProjetDto {
 	public void setTaches(List<TacheDto> taches) {
 		this.taches = taches;
 	}
-	public UserDto getAdmin() {
+	public AdminDto getAdmin() {
 		return admin;
 	}
 
-	public void setAdmin(UserDto admin) {
+	public void setAdmin(AdminDto admin) {
 		this.admin = admin;
 	}
-	public UserDto getManager() {
+	public ManagerDto getManager() {
 		return manager;
 	}
-	public void setManager(UserDto manager) {
+	public void setManager(ManagerDto manager) {
 		this.manager = manager;
 	}
 	public List<Avancemen_ProjettDto> getAvancementsProjet() {
@@ -119,6 +119,10 @@ public class ProjetDto {
 	}
 	public void setDocument(String document) {
 		this.document = document;
+	}
+	public ProjetDto() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	
 	
