@@ -171,5 +171,25 @@ public class UserServiceImpl implements UserService {
 		return usersDto;
 	}
 
+	@Override
+	public List<UserDto> getAllEmployees() {
+
+		
+        List<UserEntity> users = (List<UserEntity>) userRepository.findAll();
+		
+
+		Type listeType = new TypeToken<List<UserDto>>() {}.getType();
+		List<UserDto> employDto = new ModelMapper().map(users,listeType);
+		
+		List <UserDto> employee=new ArrayList();
+		
+		for(int i=0;i<employDto.size();i++){
+			if(employDto.get(i).getRole().equals("EMPLOYEE")) {
+				employee.add(employDto.get(i));
+			}
+		}
+		return employee;
+	}
+
 
 }

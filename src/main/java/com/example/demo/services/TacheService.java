@@ -9,7 +9,7 @@ public interface TacheService {
 
 	void createTache(TacheDto tacheDto,String email,String idEmploye,String idProjet);
 	
-	List<TacheDto> getTacheByidProjet(int idProjet);
+	List<TacheDto> getTacheByidProjet(String idProjet);
 	
 	List<TacheDto> getTacheByidEmploye(String idemploye);
 

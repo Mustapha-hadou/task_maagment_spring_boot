@@ -41,7 +41,6 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public void sendEmail(MessageDto mail) {
 
-
 	       SimpleMailMessage simpleMailSender=new SimpleMailMessage();
 	       
 	       simpleMailSender.setFrom(mail.getAdmin().getEmail());
@@ -52,12 +51,6 @@ public class MessageServiceImpl implements MessageService {
 
 	       simpleMailSender.setText(mail.getContenu());
 	       
-	       javaMailSender.send(simpleMailSender);
-		
-		
+	       javaMailSender.send(simpleMailSender);	
 	}
-	
-	
-	
-
 }

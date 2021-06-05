@@ -148,8 +148,5 @@ public class TacheEntity implements Serializable {
 		this.manager = manager;
 	}
 	
-	
-	
-	
 
 }

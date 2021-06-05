@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import java.io.Console;
 import java.lang.reflect.Type;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -24,8 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.repances.ProjetResponse;
 import com.example.demo.repances.UserRepance;
 import com.example.demo.requests.UesrRequest;
+import com.example.demo.services.ProjetService;
+import com.example.demo.services.TacheService;
 import com.example.demo.services.UserService;
 import com.example.demo.sherd.dto.ProjetDto;
+import com.example.demo.sherd.dto.TacheDto;
 import com.example.demo.sherd.dto.UserDto;
 
 @RestController
@@ -35,6 +39,13 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	ProjetService projetService;
+	
+	@Autowired
+	TacheService tacheService;
+	
+	
 	@GetMapping(path="/{id}")
 	public UserRepance getUser(@PathVariable String id ) {
 		
@@ -64,9 +75,7 @@ public class UserController {
 			userService.createUser(userDto,principal.getName());
 		}else {
 			userService.createUser(userDto);
-		}
-		
-		
+		}	
 	}
 	
 	@PutMapping(path="/{id}")
@@ -87,5 +96,46 @@ public class UserController {
 	public void deleteUser(@PathVariable String id) {
 		userService.deleteUser(id);
 	}
+	
+	@GetMapping("getEmployeParTaches/{idProjet}")
+	public  ResponseEntity<List<UserRepance>> getEmployeParTaches(@PathVariable String idProjet) {
+		
+		List<UserDto> ALLemployes = userService.getAllEmployees();
+		
+		
+		//ProjetDto projet=projetService.getProjet(idProjet);
+		
+		List<TacheDto> listesTache=tacheService.getTacheByidProjet(idProjet);
+		
+		List<String> EmployeNonDisp=new ArrayList();
+
+		for(int i=0;i<listesTache.size();i++) {
+			
+			EmployeNonDisp.add(listesTache.get(i).getEmployee().getEmail());
+			
+		}
+
+		int taille=ALLemployes.size();
+		
+		List<UserDto> EmployeDisp=new ArrayList();
+
+        for(int i=0;i<taille;i++) {
+        	
+        	if(!EmployeNonDisp.contains(ALLemployes.get(i).getEmail())) { 
+        		
+        		EmployeDisp.add(ALLemployes.get(i));
+        	}	
+		}
+        
+        Type listeType = new TypeToken<List<UserRepance>>() {}.getType();
+		List<UserRepance> ALLemployesResp = new ModelMapper().map(EmployeDisp,listeType);
+        
+		System.out.print(ALLemployesResp.size());
+		return new ResponseEntity<List<UserRepance>>(ALLemployesResp , HttpStatus.OK);
+		
+	}
+	
+	
+	
 
 }

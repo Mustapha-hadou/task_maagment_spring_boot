@@ -16,54 +16,36 @@ public class TacheDto {
 	private Date date_debut;
 	private Date date_fin;
 	private String status;
-	private EmployeDto employe;
-	private ManagerDto manager;
+	private UserDto employee;
+	private UserDto manager;
 	private ProjetDto projet;
-	private List<AvancementTacheDto> liste;	
+	private List<AvancementTacheDto> avancementTache;	
 
+	
 
+	
+	public UserDto getEmployee() {
+		return employee;
+	}
+	public void setEmployee(UserDto employee) {
+		this.employee = employee;
+	}
 	public List<AvancementTacheDto> getListe() {
-		return liste;
+		return avancementTache;
 	}
 	public void setListe(List<AvancementTacheDto> liste) {
-		this.liste = liste;
+		this.avancementTache = liste;
 	}
-	public TacheDto() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public TacheDto(long id, String tache_Id, String titre, String description, Date date_debut, Date date_fin,
-			String status, EmployeDto employe, ManagerDto manager, ProjetDto projet) {
-		super();
-		Id = id;
-		this.tache_Id = tache_Id;
-		this.titre = titre;
-		this.description = description;
-		this.date_debut = date_debut;
-		this.date_fin = date_fin;
-		this.status = status;
-		this.employe = employe;
-		this.manager = manager;
-		this.projet = projet;
-	}
-	
-	
 	public String getTache_Id() {
 		return tache_Id;
 	}
 	public void setTache_Id(String tache_Id) {
 		this.tache_Id = tache_Id;
 	}
-	public EmployeDto getEmploye() {
-		return employe;
-	}
-	public void setEmploye(EmployeDto employe) {
-		this.employe = employe;
-	}
-	public ManagerDto getManager() {
+	public UserDto getManager() {
 		return manager;
 	}
-	public void setManager(ManagerDto manager) {
+	public void setManager(UserDto manager) {
 		this.manager = manager;
 	}
 	public ProjetDto getProjet() {
@@ -108,5 +90,25 @@ public class TacheDto {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public TacheDto(long id, String tache_Id, String titre, String description, Date date_debut, Date date_fin,
+			String status, UserDto employe, UserDto manager, ProjetDto projet, List<AvancementTacheDto> liste) {
+		super();
+		Id = id;
+		this.tache_Id = tache_Id;
+		this.titre = titre;
+		this.description = description;
+		this.date_debut = date_debut;
+		this.date_fin = date_fin;
+		this.status = status;
+		this.employee = employe;
+		this.manager = manager;
+		this.projet = projet;
+		this.avancementTache = liste;
+	}
+	public TacheDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
 	
 }

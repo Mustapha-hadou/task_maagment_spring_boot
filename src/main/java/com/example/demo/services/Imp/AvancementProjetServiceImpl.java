@@ -9,11 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Avancemen_ProjettEntity;
+import com.example.demo.entities.AvancementTacheEntity;
 import com.example.demo.entities.ProjetEntity;
+import com.example.demo.entities.TacheEntity;
 import com.example.demo.repository.AvancementProjetRepository;
 import com.example.demo.repository.ProjetRepository;
 import com.example.demo.services.AvancementProjetService;
 import com.example.demo.sherd.dto.Avancemen_ProjettDto;
+import com.example.demo.sherd.dto.ProjetDto;
+import com.example.demo.sherd.dto.TacheDto;
 
 @Service
 public class AvancementProjetServiceImpl implements AvancementProjetService{
@@ -41,7 +45,18 @@ public class AvancementProjetServiceImpl implements AvancementProjetService{
 	@Override
 	public void createAvancementProjet(Avancemen_ProjettDto avanProjetDto, String id_Projet) {
 
+	    ProjetEntity projetEntity=projetRepository.findByProjetId(id_Projet);
 		
+		Type listType=new TypeToken<ProjetDto>() {}.getType();
+		ProjetDto projetdto=new ModelMapper().map(projetEntity,listType);
+		
+		avanProjetDto.setProjet(projetdto);	
+		
+		Type listTypeA=new TypeToken<Avancemen_ProjettEntity>() {}.getType();
+		Avancemen_ProjettEntity avanprojetEntity=new ModelMapper().map(avanProjetDto,listTypeA);
+		
+		
+	    avancementProjetRepository.save(avanprojetEntity);
 	}
 
 	

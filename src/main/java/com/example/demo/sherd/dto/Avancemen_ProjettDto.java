@@ -12,6 +12,20 @@ public class Avancemen_ProjettDto {
 	private ProjetDto projet;
 	
 	
+	
+	
+	public Avancemen_ProjettDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Avancemen_ProjettDto(Long id, String titre, int score, Date date_ajout, ProjetDto projet) {
+		super();
+		this.id = id;
+		Titre = titre;
+		this.score = score;
+		this.date_ajout = date_ajout;
+		this.projet = projet;
+	}
 	public Long getId() {
 		return id;
 	}

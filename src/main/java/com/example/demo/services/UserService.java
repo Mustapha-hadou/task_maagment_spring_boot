@@ -20,4 +20,6 @@ public interface UserService extends UserDetailsService {
 	void deleteUser(String userid);
 	void createUser(UserDto userDto);
 	List<UserDto> getAllUsers();
+	List<UserDto> getAllEmployees();
+
 }

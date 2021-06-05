@@ -16,8 +16,8 @@ public class ProjetDto {
 	private Date date_fin;
 	private String status;
 	private String document;
-	private AdminDto admin;
-	private ManagerDto manager;
+	private UserDto admin;
+	private UserDto manager;
 	private List<Avancemen_ProjettDto> avancementsProjet;
 
 	private List<TacheDto> taches;
@@ -28,7 +28,7 @@ public class ProjetDto {
 	
 	
 	public ProjetDto(long id, String prjet_id, String titre, String description, Date date_debut, Date date_fin, String status,
-			AdminDto admin, ManagerDto manager) {
+			UserDto admin,UserDto manager) {
 		super();
 		this.id = id;
 		this.prjet_id = prjet_id;
@@ -46,17 +46,17 @@ public class ProjetDto {
 	public void setTaches(List<TacheDto> taches) {
 		this.taches = taches;
 	}
-	public AdminDto getAdmin() {
+	public UserDto getAdmin() {
 		return admin;
 	}
 
-	public void setAdmin(AdminDto admin) {
+	public void setAdmin(UserDto admin) {
 		this.admin = admin;
 	}
-	public ManagerDto getManager() {
+	public UserDto getManager() {
 		return manager;
 	}
-	public void setManager(ManagerDto manager) {
+	public void setManager(UserDto manager) {
 		this.manager = manager;
 	}
 	public List<Avancemen_ProjettDto> getAvancementsProjet() {
@@ -65,13 +65,6 @@ public class ProjetDto {
 	public void setAvancementsProjet(List<Avancemen_ProjettDto> avancementsProjet) {
 		this.avancementsProjet = avancementsProjet;
 	}
-	/*
-	public List<TacheDto> getTaches() {
-		return taches;
-	}
-	public void setTaches(List<TacheDto> taches) {
-		this.taches = taches;
-	}*/
 	public long getId() {
 		return id;
 	}

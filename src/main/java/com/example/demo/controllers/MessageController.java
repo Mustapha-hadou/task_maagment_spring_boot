@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import java.lang.reflect.Type;
 import java.security.Principal;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -51,6 +52,5 @@ public class MessageController {
 		message.sendEmail(messageDto);
 		message.createMessage(messageDto);
 	}
-	
 	
 }

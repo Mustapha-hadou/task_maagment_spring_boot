@@ -11,18 +11,16 @@ public class AvancementTacheResponse {
 	private String titre;
 	private Date date_ajout;
 	private String score;
-	private TacheDto tache;
 
 	public AvancementTacheResponse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public AvancementTacheResponse(String titre, Date date_ajout, String score, TacheDto tache) {
+	public AvancementTacheResponse(String titre, Date date_ajout, String score) {
 		super();
 		this.titre = titre;
 		this.date_ajout = date_ajout;
 		this.score = score;
-		this.tache = tache;
 	}
 	public String getTitre() {
 		return titre;
@@ -41,11 +39,5 @@ public class AvancementTacheResponse {
 	}
 	public void setScore(String score) {
 		this.score = score;
-	}
-	public TacheDto getTache() {
-		return tache;
-	}
-	public void setTache(TacheDto tache) {
-		this.tache = tache;
 	}
 }

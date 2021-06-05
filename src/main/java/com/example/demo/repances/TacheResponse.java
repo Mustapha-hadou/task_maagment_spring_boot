@@ -14,18 +14,30 @@ public class TacheResponse {
 	private Date date_fin;
 	private String status;
 	private String tache_id;
-	private UserRepance employe;
-    private List<AvancementTacheResponse> liste;	
+	private UserRepance employee;
+    private List<AvancementTacheResponse> avancementTache;	
 	
 	
     
     
-	public TacheResponse() {
-		super();
-		// TODO Auto-generated constructor stub
+	public UserRepance getEmployee() {
+		return employee;
 	}
+
+	public void setEmployee(UserRepance employee) {
+		this.employee = employee;
+	}
+
+	public List<AvancementTacheResponse> getAvancementTache() {
+		return avancementTache;
+	}
+
+	public void setAvancementTache(List<AvancementTacheResponse> avancementTache) {
+		this.avancementTache = avancementTache;
+	}
+
 	public TacheResponse(String titre, String description, Date date_debut, Date date_fin, String status,
-			String tache_id, UserRepance employe, List<AvancementTacheResponse> liste) {
+			String tache_id, UserRepance employee, List<AvancementTacheResponse> avancementTache) {
 		super();
 		this.titre = titre;
 		this.description = description;
@@ -33,22 +45,15 @@ public class TacheResponse {
 		this.date_fin = date_fin;
 		this.status = status;
 		this.tache_id = tache_id;
-		this.employe = employe;
-		this.liste = liste;
+		this.employee = employee;
+		this.avancementTache = avancementTache;
 	}
-	public UserRepance getEmploye() {
-	return employe;
-}
-public void setEmploye(UserRepance employe) {
-	this.employe = employe;
-}
+
+	public TacheResponse() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
-	public List<AvancementTacheResponse> getListe() {
-		return liste;
-	}
-	public void setListe(List<AvancementTacheResponse> liste) {
-		this.liste = liste;
-	}
 	public String getTache_id() {
 		return tache_id;
 	}

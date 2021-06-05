@@ -19,8 +19,6 @@ import com.example.demo.repository.ProjetRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.ProjetService;
 import com.example.demo.sherd.Utils;
-import com.example.demo.sherd.dto.AdminDto;
-import com.example.demo.sherd.dto.ManagerDto;
 import com.example.demo.sherd.dto.ProjetDto;
 import com.example.demo.sherd.dto.TacheDto;
 import com.example.demo.sherd.dto.UserDto;
@@ -89,13 +87,16 @@ public class ProjetServiceImpl implements ProjetService{
 	@Override
 	public List<ProjetDto> getProjetManager(String manager_id) {
 		
-		UserEntity manager=userRepository.findByUserId(manager_id);
-		
+		UserEntity manager=userRepository.findByEmail(manager_id);
+		//UserEntity manager=userRepository.findByUserId(manager_id);
+		System.out.print(manager.getEmail());
 		List<ProjetEntity> projetsEntity = projetRepository.findByManager(manager);
-		
+		System.out.print(projetsEntity.size());
+
 		Type listeType = new TypeToken<List<ProjetDto>>() {}.getType();
 		List<ProjetDto> projetsDto = new ModelMapper().map(projetsEntity,listeType);		
-		
+		System.out.print(projetsDto.size());
+
 		
 		return projetsDto;
 	}

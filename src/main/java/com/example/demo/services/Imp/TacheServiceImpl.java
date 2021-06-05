@@ -20,8 +20,7 @@ import com.example.demo.repository.TacheRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.services.TacheService;
 import com.example.demo.sherd.Utils;
-import com.example.demo.sherd.dto.EmployeDto;
-import com.example.demo.sherd.dto.ManagerDto;
+
 import com.example.demo.sherd.dto.ProjetDto;
 import com.example.demo.sherd.dto.TacheDto;
 import com.example.demo.sherd.dto.UserDto;
@@ -53,8 +52,12 @@ public class TacheServiceImpl implements TacheService{
 
         ProjetEntity projet=projetRepository.findByProjetId(idProjet);
 		
+		System.out.print(manager.getEmail());
 		
-		
+		System.out.print(employe.getEmail());
+
+		System.out.print(projet.getDescription());
+
 		Type listTypePRo=new TypeToken<TacheEntity>() {}.getType();
 		TacheEntity tacheEntity=new ModelMapper().map(tacheDto,listTypePRo);
  
@@ -88,12 +91,19 @@ public class TacheServiceImpl implements TacheService{
 
 
 	@Override
-	public List<TacheDto> getTacheByidProjet(int idProjet) {
+	public List<TacheDto> getTacheByidProjet(String idProjet) {
 
-		//ProjetEntity projetEntity=projetRepository.findById(idProjet);
-				//tacheRepository.findByProjet(projetEntity);
+		ProjetEntity projetEntity=projetRepository.findByProjetId(idProjet);
+		
+		List<TacheEntity> list=tacheRepository.findByProjet(projetEntity);
 				
-		return null;
+		
+		Type listType=new TypeToken<List<TacheDto>>() {}.getType();
+		
+		List<TacheDto>  listesTchesDto=new ModelMapper().map(list,listType);
+		
+
+		return listesTchesDto;
 	}
 
 }

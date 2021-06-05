@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 
 import java.lang.reflect.Type;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -60,7 +61,7 @@ public class ProjetController {
 		List<ProjetResponse> projetsResponse = new ModelMapper().map(projets,listeType);
 		return new ResponseEntity<List<ProjetResponse>>(projetsResponse , HttpStatus.OK);
 	}
-	
+	 
 	@PostMapping(path="/{idManager}")
 	public void createProjet(@RequestBody ProjetRequest projetRequest,Principal principal,@PathVariable String idManager) {	
 		
@@ -81,18 +82,20 @@ public class ProjetController {
 		
 		return new ResponseEntity<ProjetResponse>(projectResponse , HttpStatus.OK);
 	}
-	@GetMapping("/{idemploye}")
+	
+	@GetMapping("getProjetEmploye/{idemploye}")
 	public ResponseEntity<List<ProjetResponse>> getProjetByEmploye(@PathVariable(name="idemploye") String employetId) {
 		
 		List<TacheDto> dtoTaches= tacheService.getTacheByidEmploye(employetId);
 		
-		List<ProjetDto> projetsDto=null;
+		List<ProjetDto> projetsDto=new ArrayList();
 		
 		for(int i=0;i<dtoTaches.size();i++) {
 			
 			ProjetDto projectDto=dtoTaches.get(i).getProjet();
 			projetsDto.add(projectDto);
 		}	
+		
 		Type listType2=new TypeToken<List<ProjetResponse>>() {}.getType();
 		List<ProjetResponse> projetsResponse=new ModelMapper().map(projetsDto,listType2);
 		
@@ -101,41 +104,54 @@ public class ProjetController {
 	
 	
 	
-	@GetMapping("/{idmanager}")
-	public ResponseEntity<List<ProjetResponse>> getProjetByManager(@PathVariable(name="idmanager") String managerId) {
+	@GetMapping("getProjetByManager")
+	public ResponseEntity<List<ProjetResponse>> getProjetByManager(Principal principalManagerId) {
 		
-		
-		List<ProjetDto> dtoProjets=projetService.getProjetManager(managerId);
-				
-
+		System.out.print("get Projet Manager");
+		List<ProjetDto> dtoProjets=projetService.getProjetManager(principalManagerId.getName());
+		System.out.print(principalManagerId.getName());
 		Type listType=new TypeToken<List<ProjetResponse>>(){}.getType();
 		List<ProjetResponse> responseProjets=new ModelMapper().map(dtoProjets,listType);
 		
+		System.out.print(responseProjets.size());	
+		
 		for(int i=0;i<responseProjets.size();i++) {
 			
-			List<Avancemen_ProjettDto> liste=avanprojetService.getAvancementProjetByidProjet(dtoProjets.get(i).getPrjet_id());
+			System.out.print(responseProjets.get(i).getPrjet_id());	
+
+			List<Avancemen_ProjettDto> liste=avanprojetService.getAvancementProjetByidProjet(responseProjets.get(i).getPrjet_id());
 			
+			System.out.print(liste.size());	
+
 			Type listType2=new TypeToken<List<Avancemen_ProjettResponse>>(){}.getType();
 			List<Avancemen_ProjettResponse> avancementProjetResponse=new ModelMapper().map(liste,listType2);
 			
+			System.out.print(avancementProjetResponse.size()+"nombre avancement projet");	
+
 			
 			responseProjets.get(i).setAvancementsProjet(avancementProjetResponse);
 			
-			List<TacheDto> dtoTaches=tacheService.getTacheByidProjet((int)dtoProjets.get(i).getId());
+			
+			List<TacheDto> dtoTaches=tacheService.getTacheByidProjet(responseProjets.get(i).getPrjet_id());
+			
 
 			Type listType3=new TypeToken<List<TacheResponse>>(){}.getType();
 			List<TacheResponse> tacheResponse=new ModelMapper().map(dtoTaches,listType3);
-			List<UserRepance> listeemloye=null;
+			
+			List<UserRepance> listeemloye=new ArrayList();
+			
 			for(int j=0;j<tacheResponse.size();j++) {
 				
-				String id=tacheResponse.get(i).getTache_id();
+				String id=tacheResponse.get(j).getTache_id();
 				List<AvancementTacheDto> listeAvancement=avancementTacheService.getAvancementTacheByidTache(id);
 				
+				System.out.print(listeAvancement.size()+"nombre avancement tache");	
+
 				Type listType4=new TypeToken<List<AvancementTacheResponse>>() {}.getType();
 				List<AvancementTacheResponse> avancementTacheResponse=new ModelMapper().map(listeAvancement,listType4);
 
-				tacheResponse.get(i).setListe(avancementTacheResponse);
-				listeemloye.add(tacheResponse.get(i).getEmploye());
+				tacheResponse.get(j).setAvancementTache(avancementTacheResponse);
+				listeemloye.add(tacheResponse.get(j).getEmployee());
 			}
 			
 			responseProjets.get(i).setTaches(tacheResponse);

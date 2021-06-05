@@ -28,6 +28,8 @@ import com.example.demo.sherd.dto.UserDto;
 
 import java.lang.reflect.Type;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -42,7 +44,8 @@ public class TcheController {
 	AvancementTacheService avancementTacheService;
 	
 	@GetMapping(path="/{idProjet}")
-	public ResponseEntity<List<TacheResponse>> getTachesProjet(@PathVariable int idProjet) {
+	public ResponseEntity<List<TacheResponse>> getTachesProjet(@PathVariable String idProjet) {
+		
 		
 		List<TacheDto> dtoTaches=tacheService.getTacheByidProjet(idProjet);
 		
@@ -57,28 +60,44 @@ public class TcheController {
 		
 		Type listType=new TypeToken<TacheDto>() {}.getType();
 		TacheDto  tacheDto=new ModelMapper().map(tacheRequest,listType);
+		
+	
+	    
 		System.out.print(principal.getName());
 		tacheService.createTache(tacheDto,principal.getName(),idEmploye,idProjet);
 		
 	}
 	
-	@GetMapping(path="/{idEmploye}")
+	@GetMapping(path="getTacheEmploye/{idEmploye}")
 	public ResponseEntity<List<TacheResponse>> getTachesEmployes(@PathVariable String idEmploye) {
 		
 		List<TacheDto> dtoTaches=tacheService.getTacheByidEmploye(idEmploye);
 		
+		System.out.println("dtoTaches"+dtoTaches.size());
+		System.out.println(dtoTaches.get(0).getId());
+
 		Type listType=new TypeToken<List<TacheResponse>>() {}.getType();
 		List<TacheResponse> tacheResponse=new ModelMapper().map(dtoTaches,listType);
 		
+		System.out.println("tacheResponse"+tacheResponse.size());
+		System.out.println(tacheResponse.get(0).getTache_id());
+
 		for(int i=0;i<tacheResponse.size();i++) {
+			
 			String id=tacheResponse.get(i).getTache_id();
+			
 			List<AvancementTacheDto> listeAvancement=avancementTacheService.getAvancementTacheByidTache(id);
+			
+			System.out.println("listeAvancement"+listeAvancement.size());
+
+			
 			
 			Type listType2=new TypeToken<List<AvancementTacheResponse>>() {}.getType();
 			List<AvancementTacheResponse> avancementTacheResponse=new ModelMapper().map(listeAvancement,listType2);
 			
-			
-			tacheResponse.get(i).setListe(avancementTacheResponse);
+			System.out.println("avancementTacheResponse"+avancementTacheResponse.size());
+
+			tacheResponse.get(i).setAvancementTache(avancementTacheResponse);
 		}
 		
 		return new ResponseEntity<List<TacheResponse>>(tacheResponse,HttpStatus.OK) ;
