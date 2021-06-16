@@ -2,6 +2,8 @@ package com.example.demo.requests;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class ProjetRequest {
 	
 	private String titre;
@@ -9,8 +11,17 @@ public class ProjetRequest {
 	private Date date_debut;
 	private Date date_fin;
 	private String status;
-	private String document;
+	private MultipartFile cahierdeCharge;
 	
+	
+	
+	
+	public MultipartFile getCahierdeCharge() {
+		return cahierdeCharge;
+	}
+	public void setCahierdeCharge(MultipartFile cahierdeCharge) {
+		this.cahierdeCharge = cahierdeCharge;
+	}
 	public String getTitre() {
 		return titre;
 	}
@@ -41,14 +52,7 @@ public class ProjetRequest {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getDocument() {
-		return document;
-	}
-	public void setDocument(String document) {
-		this.document = document;
-	}
-	
-	
+
 	
 	
 }

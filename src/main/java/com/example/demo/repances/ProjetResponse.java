@@ -16,12 +16,35 @@ public class ProjetResponse {
 	private Date date_fin;
 	private String status;
 	private String document;
+	private UserRepance manager;
 	private List<Avancemen_ProjettResponse> avancementsProjet;
 	private List<UserRepance> employes;
 
 	private List<TacheResponse> taches;
 	
 	
+	public ProjetResponse(String prjet_id, String titre, String description, Date date_debut, Date date_fin,
+			String status, String document, UserRepance manager, List<Avancemen_ProjettResponse> avancementsProjet,
+			List<UserRepance> employes, List<TacheResponse> taches) {
+		super();
+		this.prjet_id = prjet_id;
+		this.titre = titre;
+		this.description = description;
+		this.date_debut = date_debut;
+		this.date_fin = date_fin;
+		this.status = status;
+		this.document = document;
+		this.manager = manager;
+		this.avancementsProjet = avancementsProjet;
+		this.employes = employes;
+		this.taches = taches;
+	}
+	public UserRepance getManager() {
+		return manager;
+	}
+	public void setManager(UserRepance manager) {
+		this.manager = manager;
+	}
 	public List<Avancemen_ProjettResponse> getAvancementsProjet() {
 		return avancementsProjet;
 	}

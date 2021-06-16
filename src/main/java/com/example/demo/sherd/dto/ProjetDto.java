@@ -19,16 +19,17 @@ public class ProjetDto {
 	private UserDto admin;
 	private UserDto manager;
 	private List<Avancemen_ProjettDto> avancementsProjet;
-
 	private List<TacheDto> taches;
+	private String fileName;
+	private String Mimetype;
+	private byte[] Content;
 	
 	
 	
-	
-	
-	
-	public ProjetDto(long id, String prjet_id, String titre, String description, Date date_debut, Date date_fin, String status,
-			UserDto admin,UserDto manager) {
+	public ProjetDto(long id, String prjet_id, String titre, String description, Date date_debut, Date date_fin,
+			String status, String document, UserDto admin, UserDto manager,
+			List<Avancemen_ProjettDto> avancementsProjet, List<TacheDto> taches, String fileName, String mimetype,
+			byte[] content) {
 		super();
 		this.id = id;
 		this.prjet_id = prjet_id;
@@ -37,8 +38,32 @@ public class ProjetDto {
 		this.date_debut = date_debut;
 		this.date_fin = date_fin;
 		this.status = status;
+		this.document = document;
 		this.admin = admin;
 		this.manager = manager;
+		this.avancementsProjet = avancementsProjet;
+		this.taches = taches;
+		this.fileName = fileName;
+		Mimetype = mimetype;
+		Content = content;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getMimetype() {
+		return Mimetype;
+	}
+	public void setMimetype(String mimetype) {
+		Mimetype = mimetype;
+	}
+	public byte[] getContent() {
+		return Content;
+	}
+	public void setContent(byte[] content) {
+		Content = content;
 	}
 	public List<TacheDto> getTaches() {
 		return taches;

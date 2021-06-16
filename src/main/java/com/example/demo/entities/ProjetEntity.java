@@ -25,8 +25,72 @@ public class ProjetEntity implements Serializable {
 	private Date date_debut;
 	private Date date_fin;
 	private String status;
-	private String document;
+	private String fileName;
+	private String Mimetype;
+	private byte[] Content;
 	
+	
+	
+	public ProjetEntity(Long id, String projetId, String titre, String description, Date date_debut, Date date_fin,
+			String status, String fileName, String mimetype, byte[] content, AdminEntity admin, ManagerEntity manager,
+			List<TacheEntity> taches, List<Avancemen_ProjettEntity> avancementsProjet) {
+		super();
+		this.id = id;
+		this.projetId = projetId;
+		this.titre = titre;
+		this.description = description;
+		this.date_debut = date_debut;
+		this.date_fin = date_fin;
+		this.status = status;
+		this.fileName = fileName;
+		Mimetype = mimetype;
+		Content = content;
+		this.admin = admin;
+		this.manager = manager;
+		this.taches = taches;
+		this.avancementsProjet = avancementsProjet;
+	}
+
+	public String getProjetId() {
+		return projetId;
+	}
+
+	public void setProjetId(String projetId) {
+		this.projetId = projetId;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getMimetype() {
+		return Mimetype;
+	}
+
+	public void setMimetype(String mimetype) {
+		Mimetype = mimetype;
+	}
+
+	public byte[] getContent() {
+		return Content;
+	}
+
+	public void setContent(byte[] content) {
+		Content = content;
+	}
+
+	public List<Avancemen_ProjettEntity> getAvancementsProjet() {
+		return avancementsProjet;
+	}
+
+	public void setAvancementsProjet(List<Avancemen_ProjettEntity> avancementsProjet) {
+		this.avancementsProjet = avancementsProjet;
+	}
+
 	@ManyToOne
 	@JoinColumn()
 	AdminEntity admin;
@@ -48,23 +112,6 @@ public class ProjetEntity implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ProjetEntity(Long id, String prjet_id, String titre, String description, Date date_debut, Date date_fin,
-			String status, String document, AdminEntity admin, List<TacheEntity> taches, ManagerEntity manager,
-			List<Avancemen_ProjettEntity> avancementsProjet) {
-		super();
-		this.id = id;
-		this.projetId = prjet_id;
-		this.titre = titre;
-		this.description = description;
-		this.date_debut = date_debut;
-		this.date_fin = date_fin;
-		this.status = status;
-		this.document = document;
-		this.admin = admin;
-		this.taches = taches;
-		this.manager = manager;
-		this.avancementsProjet = avancementsProjet;
-	}
 
 	public Long getId() {
 		return id;
@@ -122,13 +169,6 @@ public class ProjetEntity implements Serializable {
 		this.status = status;
 	}
 
-	public String getDocument() {
-		return document;
-	}
-
-	public void setDocument(String document) {
-		this.document = document;
-	}
 
 	public AdminEntity getAdmin() {
 		return admin;

@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -63,12 +64,18 @@ public class ProjetController {
 	}
 	 
 	@PostMapping(path="/{idManager}")
-	public void createProjet(@RequestBody ProjetRequest projetRequest,Principal principal,@PathVariable String idManager) {	
+	public void createProjet(@RequestBody ProjetRequest projetRequest,Principal principal,@PathVariable String idManager) throws IOException {	
 		
+		System.out.println("ppppppppppppppp");
+
 		Type listType=new TypeToken<ProjetDto>() {}.getType();
 		ProjetDto  projetDto=new ModelMapper().map(projetRequest,listType);
 		
+		
+		
 		projetService.createProjet(projetDto,principal.getName(),idManager);
+		
+		
 		System.out.println(principal.getName() + " " +idManager);
 	}
 	
@@ -165,6 +172,7 @@ public class ProjetController {
 	@GetMapping("/{idAdmin}")
 	public ResponseEntity<List<ProjetResponse>> getProjetByAdmin(@PathVariable(name="idAdmin") String adminId) {
 		
+		System.out.print(adminId);
 		
 
 		List<ProjetDto> dtoProjets=projetService.getProjetAdmin(adminId);
