@@ -77,9 +77,11 @@ public class TacheServiceImpl implements TacheService{
 	@Override
 	public List<TacheDto> getTacheByidEmploye(String idemploye) {
 		
-		UserEntity userEntity=userRepository. findByUserId(idemploye);
+		UserEntity userEntity=userRepository.findByEmail(idemploye);
+		System.out.println(userEntity.getEmail());
 		List<TacheEntity> listTaches=tacheRepository.findByEmployee(userEntity);
-		
+		System.out.println(listTaches.size());
+
 
 		Type listType=new TypeToken<List<TacheDto>>() {}.getType();
 		List<TacheDto>  listesTchesDto=new ModelMapper().map(listTaches,listType);

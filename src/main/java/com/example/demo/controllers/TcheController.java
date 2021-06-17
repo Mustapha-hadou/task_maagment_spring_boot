@@ -15,11 +15,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.entities.ProjetEntity;
+import com.example.demo.entities.UserEntity;
 import com.example.demo.repances.AvancementTacheResponse;
 import com.example.demo.repances.TacheResponse;
+import com.example.demo.repository.ProjetRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.requests.TacheRequest;
 import com.example.demo.requests.UesrRequest;
 import com.example.demo.services.AvancementTacheService;
+import com.example.demo.services.MailService;
 import com.example.demo.services.TacheService;
 import com.example.demo.services.UserService;
 import com.example.demo.sherd.dto.AvancementTacheDto;
@@ -42,6 +47,13 @@ public class TcheController {
 	
 	@Autowired
 	AvancementTacheService avancementTacheService;
+	@Autowired
+    private MailService mailService;
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	ProjetRepository projetRepository;
 	
 	@GetMapping(path="/{idProjet}")
 	public ResponseEntity<List<TacheResponse>> getTachesProjet(@PathVariable String idProjet) {
@@ -61,17 +73,26 @@ public class TcheController {
 		Type listType=new TypeToken<TacheDto>() {}.getType();
 		TacheDto  tacheDto=new ModelMapper().map(tacheRequest,listType);
 		
-	
-	    
 		System.out.print(principal.getName());
+		
 		tacheService.createTache(tacheDto,principal.getName(),idEmploye,idProjet);
 		
+		UserEntity employe =  userRepository.findByUserId(idEmploye);
+		ProjetEntity projet =  projetRepository.findByProjetId(idProjet);
+		
+		mailService.send(principal.getName(),employe.getEmail(), "Affectation d'un tache", "Hello, " + employe.getNom()
+        + "\n\n vous êtes affectee a une nouvelle  tache . \n"
+        + "\n projet: "+projet.getTitre()
+        + "\n votre tache : "+tacheDto.getTitre()
+        + "\n descruption de tache :"+tacheDto.getDescription()
+        + "\n date de remise: "+tacheDto.getDate_fin()
+        + "\n Merci.");
 	}
 	
-	@GetMapping(path="getTacheEmploye/{idEmploye}")
-	public ResponseEntity<List<TacheResponse>> getTachesEmployes(@PathVariable String idEmploye) {
+	@GetMapping(path="/getTacheEmploye")
+	public ResponseEntity<List<TacheResponse>> getTachesEmployes(Principal idEmploye) {
 		
-		List<TacheDto> dtoTaches=tacheService.getTacheByidEmploye(idEmploye);
+		List<TacheDto> dtoTaches=tacheService.getTacheByidEmploye(idEmploye.getName());
 		
 		System.out.println("dtoTaches"+dtoTaches.size());
 		System.out.println(dtoTaches.get(0).getId());
@@ -83,7 +104,9 @@ public class TcheController {
 		System.out.println(tacheResponse.get(0).getTache_id());
 
 		for(int i=0;i<tacheResponse.size();i++) {
-			
+			tacheResponse.get(i).setProjet(dtoTaches.get(i).getProjet().getTitre());
+			tacheResponse.get(i).setManager(dtoTaches.get(i).getProjet().getManager().getNom());
+
 			String id=tacheResponse.get(i).getTache_id();
 			
 			List<AvancementTacheDto> listeAvancement=avancementTacheService.getAvancementTacheByidTache(id);

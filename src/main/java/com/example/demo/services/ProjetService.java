@@ -14,6 +14,6 @@ public interface ProjetService {
 	ProjetDto getProjet(String projetId);
 	List<ProjetDto> getProjetManager(String manager_id);
 	List<ProjetDto> getProjetAdmin(String admin_id);
-
+	List<ProjetDto> getProjetByDedlain();
 	void deleteProjet(String projetId);
 }

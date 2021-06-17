@@ -7,7 +7,9 @@ import com.example.demo.sherd.dto.UserDto;
 
 public class TacheResponse {
 
-	
+	private String projet;
+	private String manager;
+
 	private String titre;
 	private String description;
 	private Date date_debut;
@@ -16,10 +18,42 @@ public class TacheResponse {
 	private String tache_id;
 	private UserRepance employee;
     private List<AvancementTacheResponse> avancementTache;	
-	
+
 	
     
     
+	public TacheResponse(String projet, String manager, String titre, String description, Date date_debut,
+			Date date_fin, String status, String tache_id, UserRepance employee,
+			List<AvancementTacheResponse> avancementTache) {
+		super();
+		this.projet = projet;
+		this.manager = manager;
+		this.titre = titre;
+		this.description = description;
+		this.date_debut = date_debut;
+		this.date_fin = date_fin;
+		this.status = status;
+		this.tache_id = tache_id;
+		this.employee = employee;
+		this.avancementTache = avancementTache;
+	}
+
+	public String getManager() {
+		return manager;
+	}
+
+	public void setManager(String manager) {
+		this.manager = manager;
+	}
+
+	public String getProjet() {
+		return projet;
+	}
+
+	public void setProjet(String projet) {
+		this.projet = projet;
+	}
+
 	public UserRepance getEmployee() {
 		return employee;
 	}
@@ -36,18 +70,8 @@ public class TacheResponse {
 		this.avancementTache = avancementTache;
 	}
 
-	public TacheResponse(String titre, String description, Date date_debut, Date date_fin, String status,
-			String tache_id, UserRepance employee, List<AvancementTacheResponse> avancementTache) {
-		super();
-		this.titre = titre;
-		this.description = description;
-		this.date_debut = date_debut;
-		this.date_fin = date_fin;
-		this.status = status;
-		this.tache_id = tache_id;
-		this.employee = employee;
-		this.avancementTache = avancementTache;
-	}
+	
+
 
 	public TacheResponse() {
 		super();

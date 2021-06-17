@@ -10,6 +10,7 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,22 +23,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.entities.ManagerEntity;
 import com.example.demo.entities.ProjetEntity;
+import com.example.demo.entities.UserEntity;
 import com.example.demo.repances.Avancemen_ProjettResponse;
 import com.example.demo.repances.AvancementTacheResponse;
 import com.example.demo.repances.ProjetResponse;
 import com.example.demo.repances.TacheResponse;
 import com.example.demo.repances.UserRepance;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.requests.ProjetRequest;
 import com.example.demo.requests.TacheRequest;
 import com.example.demo.services.AvancementProjetService;
 import com.example.demo.services.AvancementTacheService;
+import com.example.demo.services.MailService;
 import com.example.demo.services.ProjetService;
 import com.example.demo.services.TacheService;
+import com.example.demo.services.UserService;
 import com.example.demo.sherd.dto.Avancemen_ProjettDto;
 import com.example.demo.sherd.dto.AvancementTacheDto;
 import com.example.demo.sherd.dto.ProjetDto;
 import com.example.demo.sherd.dto.TacheDto;
+import com.example.demo.sherd.dto.UserDto;
 
 @RestController
 @RequestMapping("/projets")
@@ -49,8 +56,13 @@ public class ProjetController {
 	TacheService tacheService;
 	
 	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
 	AvancementProjetService avanprojetService;
 	
+	@Autowired
+    private MailService mailService;
 
 	@Autowired
 	AvancementTacheService avancementTacheService;
@@ -65,17 +77,21 @@ public class ProjetController {
 	 
 	@PostMapping(path="/{idManager}")
 	public void createProjet(@RequestBody ProjetRequest projetRequest,Principal principal,@PathVariable String idManager) throws IOException {	
-		
-		System.out.println("ppppppppppppppp");
+		UserEntity manager =  userRepository.findByUserId(idManager);
+		System.out.println(principal.getName());
+		System.out.println(manager.getEmail());
 
 		Type listType=new TypeToken<ProjetDto>() {}.getType();
 		ProjetDto  projetDto=new ModelMapper().map(projetRequest,listType);
 		
-		
-		
 		projetService.createProjet(projetDto,principal.getName(),idManager);
 		
-		
+		mailService.send(principal.getName(),manager.getEmail(), "Affectation d'un projet", "Hello, " + manager.getNom()
+        + "\n\n vous êtes affectee a un nouveaux projet comme manager. \n"
+        + "\n projet: "+projetDto.getTitre()
+        + "\n descruption :"+projetDto.getDescription()
+        + "\n date de remise: "+projetDto.getDate_fin()
+        + "\n Merci.");
 		System.out.println(principal.getName() + " " +idManager);
 	}
 	
@@ -90,11 +106,13 @@ public class ProjetController {
 		return new ResponseEntity<ProjetResponse>(projectResponse , HttpStatus.OK);
 	}
 	
-	@GetMapping("getProjetEmploye/{idemploye}")
-	public ResponseEntity<List<ProjetResponse>> getProjetByEmploye(@PathVariable(name="idemploye") String employetId) {
+	@GetMapping("/getProjetEmploye")
+	public ResponseEntity<List<ProjetResponse>> getProjetByEmploye(Principal  employetId) {
 		
-		List<TacheDto> dtoTaches= tacheService.getTacheByidEmploye(employetId);
-		
+		System.out.println(employetId.getName());
+		List<TacheDto> dtoTaches= tacheService.getTacheByidEmploye(employetId.getName());
+		System.out.println( dtoTaches.size());
+
 		List<ProjetDto> projetsDto=new ArrayList();
 		
 		for(int i=0;i<dtoTaches.size();i++) {

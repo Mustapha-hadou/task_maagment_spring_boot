@@ -23,6 +23,10 @@ public class ProjetResponse {
 	private List<TacheResponse> taches;
 	
 	
+	public ProjetResponse() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public ProjetResponse(String prjet_id, String titre, String description, Date date_debut, Date date_fin,
 			String status, String document, UserRepance manager, List<Avancemen_ProjettResponse> avancementsProjet,
 			List<UserRepance> employes, List<TacheResponse> taches) {
