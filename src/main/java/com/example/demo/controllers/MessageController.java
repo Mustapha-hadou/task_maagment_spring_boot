@@ -2,7 +2,10 @@ package com.example.demo.controllers;
 
 import java.lang.reflect.Type;
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -19,9 +22,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.entities.ProjetEntity;
+import com.example.demo.entities.TacheEntity;
 import com.example.demo.repances.ProjetResponse;
+import com.example.demo.repository.ProjetRepository;
+import com.example.demo.repository.TacheRepository;
 import com.example.demo.requests.MessageRequest;
 import com.example.demo.requests.TacheRequest;
+import com.example.demo.services.MailService;
 import com.example.demo.services.MessageService;
 import com.example.demo.services.ProjetService;
 import com.example.demo.services.UserService;
@@ -41,12 +49,73 @@ public class MessageController {
 	UserService user;
 	@Autowired
 	ProjetService projetService;
+	@Autowired
+    private MailService mailService;
+	@Autowired
+	ProjetRepository projetRepository;
 	
+	@Autowired
+	TacheRepository tacheRepository;
 	@GetMapping
-	public ResponseEntity<List<ProjetResponse>> getProjetByDedlain() {
-		projetService.getProjetByDedlain();
+	public void getProjetByDedlain() {
+    List<ProjetEntity> projets = projetRepository.findAll();
 		
-		return null;
+		for(int i = 0; i < projets.size(); i++) {
+			if(projets.get(i).getStatus() != "Finished") {
+				long millis = projets.get(i).getDate_fin().getTime();
+				
+				System.out.println(projets.get(i).getDate_fin().getTime()  - System.currentTimeMillis());
+				if(System.currentTimeMillis() - projets.get(i).getDate_fin().getTime() == 172800000) {
+					mailService.send(projets.get(i).getAdmin().getEmail(),projets.get(i).getManager().getEmail(), "finaliser Projet", "salut ! , " +projets.get(i).getManager().getNom()
+					        + "\n\n il vous reste moins de deux jours pour finir projet de "+projets.get(i).getTitre());
+				}
+				if(System.currentTimeMillis() - projets.get(i).getDate_fin().getTime() == 0) {
+					String status = "" ;
+					if(!projets.get(i).getStatus().equals("Finished")){
+						status = "UCancelled";
+						projets.get(i).setStatus(status);
+						projetRepository.save(projets.get(i));
+					}
+				}
+				
+					
+			}
+				
+		}
+		
+		
+	}
+	
+	@GetMapping(path="/tache")
+	public void getTacheByDedlain() {
+    List<TacheEntity> taches = tacheRepository.findAll();
+		
+		for(int i = 0; i < taches.size(); i++) {
+			if(taches.get(i).getStatus() != "Finished") {
+				long millis = taches.get(i).getDate_fin().getTime();
+				
+				System.out.println(taches.get(i).getDate_fin().getTime()  - System.currentTimeMillis());
+				if(System.currentTimeMillis() - taches.get(i).getDate_fin().getTime() < 172800000) {
+					mailService.send(taches.get(i).getManager().getEmail(),taches.get(i).getEmployee().getEmail(), "finaliser tache", "salut ! , " +taches.get(i).getEmployee().getNom()
+					        + "\n\n il vous reste moins de deux jours pour finir la tache de "+taches.get(i).getTitre());
+					System.out.println("okk");
+				}
+				
+				if(System.currentTimeMillis() - taches.get(i).getDate_fin().getTime() == 0) {
+					String status = "" ;
+					if(!taches.get(i).getStatus().equals("Finished")){
+						status = "UCancelled";
+						taches.get(i).setStatus(status);
+						tacheRepository.save(taches.get(i));
+					}
+				}
+				
+					
+			}
+				
+		}
+		
+		
 	}
 	
 }

@@ -55,7 +55,15 @@ public class AvancementProjetServiceImpl implements AvancementProjetService{
 		Type listTypeA=new TypeToken<Avancemen_ProjettEntity>() {}.getType();
 		Avancemen_ProjettEntity avanprojetEntity=new ModelMapper().map(avanProjetDto,listTypeA);
 		
-		
+		String status = "" ;
+		if(avanprojetEntity.getScore() != 0) {
+			status = "Under Processing";
+			if(avanprojetEntity.getScore() == 100) {
+				status = "Finished";
+			}
+			projetEntity.setStatus(status);
+			projetRepository.save(projetEntity);
+		}
 	    avancementProjetRepository.save(avanprojetEntity);
 	}
 

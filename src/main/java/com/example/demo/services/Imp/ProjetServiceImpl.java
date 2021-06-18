@@ -1,6 +1,9 @@
 package com.example.demo.services.Imp;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -116,10 +119,6 @@ public class ProjetServiceImpl implements ProjetService{
 		return projetsDto;
 	}
 
-	@Override
-	public List<ProjetDto> getProjetByDedlain() {
-		System.out.println(System.currentTimeMillis());
-		return null;
-	}
+	
 
 }

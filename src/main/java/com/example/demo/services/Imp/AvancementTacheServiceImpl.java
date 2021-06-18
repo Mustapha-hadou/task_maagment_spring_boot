@@ -53,6 +53,20 @@ public class AvancementTacheServiceImpl  implements AvancementTacheService {
 		Type listTypeA=new TypeToken<AvancementTacheEntity>() {}.getType();
 		AvancementTacheEntity avantacheEntity=new ModelMapper().map(avantacheDto,listTypeA);
 		
+		String status = "" ;
+		if(avantacheEntity.getScore() != 0) {
+			status = "Under Processing";
+			System.out.println("pro");
+			if(avantacheEntity.getScore() == 100) {
+				status = "Finished";
+				System.out.println("fini");
+			}
+			tacheEntity.setStatus(status);
+			tacheRepository.save(tacheEntity);
+			
+		}
+		
+		
 	    avancementTacheRepository.save(avantacheEntity);
 	}
 

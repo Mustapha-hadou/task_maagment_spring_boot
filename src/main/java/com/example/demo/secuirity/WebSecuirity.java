@@ -34,6 +34,7 @@ public class WebSecuirity extends WebSecurityConfigurerAdapter {
 		    .cors().and()
 		    .csrf().disable()
 		    .authorizeRequests()
+		    .antMatchers("/message/**").permitAll()
 		    .antMatchers(HttpMethod.POST, SecurityConstants.SING_UP_URL)
 		    .permitAll()
 			.anyRequest().authenticated() 	

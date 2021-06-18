@@ -14,4 +14,5 @@ public interface ProjetRepository extends CrudRepository<ProjetEntity,Long>{
 	ProjetEntity findByProjetId(String projetId);
 	List<ProjetEntity> findByManager(UserEntity managerId);
 	List<ProjetEntity> findByAdmin(UserEntity adminId);
+	List<ProjetEntity> findAll();
 }

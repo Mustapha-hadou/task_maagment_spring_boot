@@ -15,7 +15,7 @@ public interface TacheRepository  extends  CrudRepository<TacheEntity, Long> {
 	List<TacheEntity>  findByEmployee(UserEntity user); 
 		
 	List<TacheEntity> findByProjet(ProjetEntity Projet);
-	
+	List<TacheEntity> findAll();
 	TacheEntity findByTacheId(String tache_id);
 
 	
