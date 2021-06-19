@@ -25,15 +25,13 @@ public class ProjetEntity implements Serializable {
 	private Date date_debut;
 	private Date date_fin;
 	private String status;
-	private String fileName;
-	private String Mimetype;
-	private byte[] Content;
+	private String document;
+
 	
-	
-	
+
 	public ProjetEntity(Long id, String projetId, String titre, String description, Date date_debut, Date date_fin,
-			String status, String fileName, String mimetype, byte[] content, AdminEntity admin, ManagerEntity manager,
-			List<TacheEntity> taches, List<Avancemen_ProjettEntity> avancementsProjet) {
+			String status, String document, AdminEntity admin, ManagerEntity manager, List<TacheEntity> taches,
+			List<Avancemen_ProjettEntity> avancementsProjet) {
 		super();
 		this.id = id;
 		this.projetId = projetId;
@@ -42,13 +40,19 @@ public class ProjetEntity implements Serializable {
 		this.date_debut = date_debut;
 		this.date_fin = date_fin;
 		this.status = status;
-		this.fileName = fileName;
-		Mimetype = mimetype;
-		Content = content;
+		this.document = document;
 		this.admin = admin;
 		this.manager = manager;
 		this.taches = taches;
 		this.avancementsProjet = avancementsProjet;
+	}
+
+	public String getDocument() {
+		return document;
+	}
+
+	public void setDocument(String document) {
+		this.document = document;
 	}
 
 	public String getProjetId() {
@@ -59,29 +63,7 @@ public class ProjetEntity implements Serializable {
 		this.projetId = projetId;
 	}
 
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getMimetype() {
-		return Mimetype;
-	}
-
-	public void setMimetype(String mimetype) {
-		Mimetype = mimetype;
-	}
-
-	public byte[] getContent() {
-		return Content;
-	}
-
-	public void setContent(byte[] content) {
-		Content = content;
-	}
+	
 
 	public List<Avancemen_ProjettEntity> getAvancementsProjet() {
 		return avancementsProjet;

@@ -13,6 +13,8 @@ public interface ProjetService {
 	void createProjet(ProjetDto projetDto,String email,String idManager);
 	ProjetDto getProjet(String projetId);
 	List<ProjetDto> getProjetManager(String manager_id);
-	List<ProjetDto> getProjetAdmin(String admin_id);
+	//List<ProjetDto> getProjetAdmin(String admin_id);
 	void deleteProjet(String projetId);
+	List<ProjetDto> getProjetAdmin(String email);
+	
 }

@@ -104,11 +104,25 @@ public class ProjetServiceImpl implements ProjetService{
 		return projetsDto;
 	}
 
-
+/*
 	@Override
 	public List<ProjetDto> getProjetAdmin(String admin_id) {
 		
 		UserEntity admin=userRepository.findByUserId(admin_id);
+
+	List<ProjetEntity> projetsEntity = projetRepository.findByAdmin(admin);
+		
+		Type listeType = new TypeToken<List<ProjetDto>>() {}.getType();
+		List<ProjetDto> projetsDto = new ModelMapper().map(projetsEntity,listeType);		
+		
+		
+		return projetsDto;
+	}*/
+	
+	@Override
+	public List<ProjetDto> getProjetAdmin(String email) {
+		
+		UserEntity admin=userRepository.findByEmail(email);
 
 	List<ProjetEntity> projetsEntity = projetRepository.findByAdmin(admin);
 		

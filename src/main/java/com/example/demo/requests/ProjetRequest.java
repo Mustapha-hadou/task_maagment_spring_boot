@@ -11,16 +11,17 @@ public class ProjetRequest {
 	private Date date_debut;
 	private Date date_fin;
 	private String status;
-	private MultipartFile cahierdeCharge;
+	private String document;
 	
 	
 	
 	
-	public MultipartFile getCahierdeCharge() {
-		return cahierdeCharge;
+	
+	public String getDocument() {
+		return document;
 	}
-	public void setCahierdeCharge(MultipartFile cahierdeCharge) {
-		this.cahierdeCharge = cahierdeCharge;
+	public void setDocument(String document) {
+		this.document = document;
 	}
 	public String getTitre() {
 		return titre;

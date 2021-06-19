@@ -4,7 +4,10 @@ package com.example.demo.controllers;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -142,8 +145,20 @@ public class ProjetController {
 		
 		for(int i=0;i<responseProjets.size();i++) {
 			
-			System.out.print(responseProjets.get(i).getPrjet_id());	
 
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+			try {
+				Date dateWithoutTime = sdf.parse(sdf.format(responseProjets.get(i).getDate_debut()));
+				responseProjets.get(i).setDate_debut(dateWithoutTime);
+				System.out.println(dateWithoutTime);	
+				System.out.println("OK");	
+
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			List<Avancemen_ProjettDto> liste=avanprojetService.getAvancementProjetByidProjet(responseProjets.get(i).getPrjet_id());
 			
 			System.out.print(liste.size());	
@@ -186,7 +201,7 @@ public class ProjetController {
 	}
 	
 	
-
+/*
 	@GetMapping("/{idAdmin}")
 	public ResponseEntity<List<ProjetResponse>> getProjetByAdmin(@PathVariable(name="idAdmin") String adminId) {
 		
@@ -211,7 +226,7 @@ public class ProjetController {
 		}
 	
 		return new ResponseEntity<List<ProjetResponse>>(responseProjets, HttpStatus.OK);		
-	}	
+	}	*/
 
 	@PutMapping("/{id}")
 	public ResponseEntity<String> updateProjet(@PathVariable(name="id") String projetId) {
@@ -224,6 +239,30 @@ public class ProjetController {
 		projetService.deleteProjet(projetId);
 		
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("/admin/{emailAdmin}")
+	public ResponseEntity<List<ProjetResponse>> getProjetByAdmin(@PathVariable(name="emailAdmin") String adminEmail) {
+		
+
+		List<ProjetDto> dtoProjets=projetService.getProjetAdmin(adminEmail);
+				
+
+		Type listType=new TypeToken<List<ProjetResponse>>(){}.getType();
+		List<ProjetResponse> responseProjets=new ModelMapper().map(dtoProjets,listType);
+		System.out.println(responseProjets.size());
+		for(int i=0;i<responseProjets.size();i++) {
+			
+			List<Avancemen_ProjettDto> liste=avanprojetService.getAvancementProjetByidProjet(dtoProjets.get(i).getPrjet_id());
+			
+			Type listType2=new TypeToken<List<Avancemen_ProjettResponse>>(){}.getType();
+			List<Avancemen_ProjettResponse> avancementProjetResponse=new ModelMapper().map(liste,listType2);
+			
+			
+			responseProjets.get(i).setAvancementsProjet(avancementProjetResponse);
+		}
+	
+		return new ResponseEntity<List<ProjetResponse>>(responseProjets, HttpStatus.OK);		
 	}
 
 

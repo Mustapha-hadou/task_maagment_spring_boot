@@ -23,6 +23,7 @@ import com.example.demo.entities.ManagerEntity;
 import com.example.demo.entities.ProjetEntity;
 import com.example.demo.entities.UserEntity;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.services.MailService;
 import com.example.demo.services.UserService;
 import com.example.demo.sherd.Utils;
 import com.example.demo.sherd.dto.ProjetDto;
@@ -37,16 +38,19 @@ public class UserServiceImpl implements UserService {
     Utils util;
     
     @Autowired
+    MailService mailService ;
+    
+    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
     
 	@Override
 	public void createUser(UserDto userDto,String email) {
-        UserEntity checkuser =  userRepository.findByEmail(userDto.getEmail());
+		UserEntity checkuser =  userRepository.findByEmail(userDto.getEmail());
 	    if(checkuser != null) throw new RuntimeException("cet utilisqteur existe deja dans la base de donnes");
 		
 		UserEntity userEntity = new UserEntity();
 		BeanUtils.copyProperties(userDto, userEntity);
-		userEntity.setEncryptepassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+		String password = util.generateStringId(8);
 		userEntity.setUserId(util.generateStringId(32));
 		if(userEntity.getRole().equals("ADMIN")) {	
 			ModelMapper modelMapper=new ModelMapper();
@@ -55,6 +59,7 @@ public class UserServiceImpl implements UserService {
 		}
 		if(userEntity.getRole().equals("MANAGER")) {
 			
+			userEntity.setEncryptepassword(bCryptPasswordEncoder.encode(password));
 			AdminEntity admin = (AdminEntity) userRepository.findByEmail(email);
 			ModelMapper modelMapper=new ModelMapper();
 			
@@ -63,8 +68,11 @@ public class UserServiceImpl implements UserService {
 			
 			managerEntity.setAdmin(admin);
 			userRepository.save(managerEntity);
+			mailService.transactionMail(managerEntity.getEmail(), "Creation de compte", "salut ! , " +managerEntity.getNom()
+			        + "\n\n vorte compte a ete creer pour connecter utiliser votre adresse email et cette mot de passe : "+password);
 		}
 		if (userEntity.getRole().equals("EMPLOYEE")) {
+			userEntity.setEncryptepassword(bCryptPasswordEncoder.encode(password));
 			AdminEntity admin = (AdminEntity) userRepository.findByEmail(email);
 			ModelMapper modelMapper=new ModelMapper();
 			
@@ -73,6 +81,8 @@ public class UserServiceImpl implements UserService {
 			
 			employeEntity.setAdmin(admin);
 			userRepository.save(employeEntity);
+			mailService.transactionMail(employeEntity.getEmail(), "Creation de compte", "salut ! , " +employeEntity.getNom()
+			        + "\n\n vorte compte a ete creer pour connecter utiliser votre adresse email et cette mot de passe : "+password);
 		}
 		
 		

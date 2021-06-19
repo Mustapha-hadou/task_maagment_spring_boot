@@ -22,8 +22,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.entities.AdminEntity;
+import com.example.demo.entities.UserEntity;
 import com.example.demo.repances.ProjetResponse;
 import com.example.demo.repances.UserRepance;
+import com.example.demo.repository.EmployeRepository;
+import com.example.demo.repository.MnagerRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.requests.UesrRequest;
 import com.example.demo.services.ProjetService;
 import com.example.demo.services.TacheService;
@@ -45,6 +50,14 @@ public class UserController {
 	@Autowired
 	TacheService tacheService;
 	
+	@Autowired
+	EmployeRepository empRepository;
+	
+	@Autowired
+	MnagerRepository managerRepository;
+	@Autowired
+	UserRepository userRepository;
+	
 	
 	@GetMapping(path="/{id}")
 	public UserRepance getUser(@PathVariable String id ) {
@@ -58,10 +71,16 @@ public class UserController {
 	}
 	
 	@GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<UserRepance>>getUsers(){
-		List<UserDto> users = userService.getAllUsers();
+	public ResponseEntity<List<UserRepance>>getUsers(Principal principal){
+		AdminEntity admin = (AdminEntity) userRepository.findByEmail(principal.getName());
+		List<UserEntity> usersManger = managerRepository.findByAdmin(admin);
+		List<UserEntity> usersEmployer = empRepository.findByAdmin(admin);
+		usersManger.addAll(usersEmployer);
+		
+		Type listeTypedto = new TypeToken<List<UserDto>>() {}.getType();
+		List<UserDto> usersDto = new ModelMapper().map(usersManger,listeTypedto);
 		Type listeType = new TypeToken<List<UserRepance>>() {}.getType();
-		List<UserRepance> usersResponse = new ModelMapper().map(users,listeType);
+		List<UserRepance> usersResponse = new ModelMapper().map(usersDto,listeType);
 		return new ResponseEntity<List<UserRepance>>(usersResponse , HttpStatus.OK);
 	}
 	
