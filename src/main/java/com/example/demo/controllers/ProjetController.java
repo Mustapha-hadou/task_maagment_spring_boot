@@ -144,21 +144,7 @@ public class ProjetController {
 		System.out.print(responseProjets.size());	
 		
 		for(int i=0;i<responseProjets.size();i++) {
-			
-
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
-			try {
-				Date dateWithoutTime = sdf.parse(sdf.format(responseProjets.get(i).getDate_debut()));
-				responseProjets.get(i).setDate_debut(dateWithoutTime);
-				System.out.println(dateWithoutTime);	
-				System.out.println("OK");	
-
-
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+						
 			List<Avancemen_ProjettDto> liste=avanprojetService.getAvancementProjetByidProjet(responseProjets.get(i).getPrjet_id());
 			
 			System.out.print(liste.size());	

@@ -92,13 +92,14 @@ public class ProjetServiceImpl implements ProjetService{
 		
 		UserEntity manager=userRepository.findByEmail(manager_id);
 		//UserEntity manager=userRepository.findByUserId(manager_id);
-		System.out.print(manager.getEmail());
 		List<ProjetEntity> projetsEntity = projetRepository.findByManager(manager);
-		System.out.print(projetsEntity.size());
-
 		Type listeType = new TypeToken<List<ProjetDto>>() {}.getType();
 		List<ProjetDto> projetsDto = new ModelMapper().map(projetsEntity,listeType);		
-		System.out.print(projetsDto.size());
+		for(int i=0;i<projetsDto.size();i++ ) {
+			if(projetsDto.get(i).getStatus().equals("Cancelled")) {
+				projetsDto.remove(i);
+			}
+		}
 
 		
 		return projetsDto;

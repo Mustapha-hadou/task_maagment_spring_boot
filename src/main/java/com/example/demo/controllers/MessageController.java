@@ -61,7 +61,7 @@ public class MessageController {
     List<ProjetEntity> projets = projetRepository.findAll();
 		
 		for(int i = 0; i < projets.size(); i++) {
-			if(projets.get(i).getStatus() != "Finished") {
+			if(projets.get(i).getStatus() != "Finished" && projets.get(i).getStatus() != "Cancelled") {
 				long millis = projets.get(i).getDate_fin().getTime();
 				
 				System.out.println(projets.get(i).getDate_fin().getTime()  - System.currentTimeMillis());
@@ -72,7 +72,7 @@ public class MessageController {
 				if(System.currentTimeMillis() - projets.get(i).getDate_fin().getTime() == 0) {
 					String status = "" ;
 					if(!projets.get(i).getStatus().equals("Finished")){
-						status = "UCancelled";
+						status = "Cancelled";
 						projets.get(i).setStatus(status);
 						projetRepository.save(projets.get(i));
 					}
@@ -91,7 +91,7 @@ public class MessageController {
     List<TacheEntity> taches = tacheRepository.findAll();
 		
 		for(int i = 0; i < taches.size(); i++) {
-			if(taches.get(i).getStatus() != "Finished") {
+			if(taches.get(i).getStatus() != "Finished" & taches.get(i).getStatus() != "Cancelled") {
 				long millis = taches.get(i).getDate_fin().getTime();
 				
 				System.out.println(taches.get(i).getDate_fin().getTime()  - System.currentTimeMillis());
@@ -101,10 +101,10 @@ public class MessageController {
 					System.out.println("okk");
 				}
 				
-				if(System.currentTimeMillis() - taches.get(i).getDate_fin().getTime() == 0) {
+				if(System.currentTimeMillis() - taches.get(i).getDate_fin().getTime() < 0) {
 					String status = "" ;
 					if(!taches.get(i).getStatus().equals("Finished")){
-						status = "UCancelled";
+						status = "Cancelled";
 						taches.get(i).setStatus(status);
 						tacheRepository.save(taches.get(i));
 					}
