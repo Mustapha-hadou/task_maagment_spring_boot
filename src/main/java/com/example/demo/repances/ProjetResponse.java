@@ -19,7 +19,22 @@ public class ProjetResponse {
 	private UserRepance manager;
 	private List<Avancemen_ProjettResponse> avancementsProjet;
 	private List<UserRepance> employes;
+	private int deadline;
+	private int score;
+	
 
+	public int getScore() {
+		return score;
+	}
+	public void setScore(int score) {
+		this.score = score;
+	}
+	public int getDeadline() {
+		return deadline;
+	}
+	public void setDeadline(int deadline) {
+		this.deadline = deadline;
+	}
 	private List<TacheResponse> taches;
 	
 	
@@ -27,9 +42,10 @@ public class ProjetResponse {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	public ProjetResponse(String prjet_id, String titre, String description, Date date_debut, Date date_fin,
 			String status, String document, UserRepance manager, List<Avancemen_ProjettResponse> avancementsProjet,
-			List<UserRepance> employes, List<TacheResponse> taches) {
+			List<UserRepance> employes, int deadline, int score, List<TacheResponse> taches) {
 		super();
 		this.prjet_id = prjet_id;
 		this.titre = titre;
@@ -41,6 +57,8 @@ public class ProjetResponse {
 		this.manager = manager;
 		this.avancementsProjet = avancementsProjet;
 		this.employes = employes;
+		this.deadline = deadline;
+		this.score = score;
 		this.taches = taches;
 	}
 	public UserRepance getManager() {

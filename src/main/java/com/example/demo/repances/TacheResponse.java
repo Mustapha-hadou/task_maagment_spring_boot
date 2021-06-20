@@ -19,12 +19,13 @@ public class TacheResponse {
 	private UserRepance employee;
     private List<AvancementTacheResponse> avancementTache;	
 
+    private int score;
 	
     
     
 	public TacheResponse(String projet, String manager, String titre, String description, Date date_debut,
 			Date date_fin, String status, String tache_id, UserRepance employee,
-			List<AvancementTacheResponse> avancementTache) {
+			List<AvancementTacheResponse> avancementTache, int score) {
 		super();
 		this.projet = projet;
 		this.manager = manager;
@@ -36,6 +37,15 @@ public class TacheResponse {
 		this.tache_id = tache_id;
 		this.employee = employee;
 		this.avancementTache = avancementTache;
+		this.score = score;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public String getManager() {
