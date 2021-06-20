@@ -185,5 +185,21 @@ public class UserController {
 		return userReponse;
 	}
 	
+	
+	@GetMapping(path="/manager")
+	public ResponseEntity<List<UserRepance>>getManager(Principal principal){
+		AdminEntity admin = (AdminEntity) userRepository.findByEmail(principal.getName());
+		List<UserEntity> usersManger = managerRepository.findByAdmin(admin);
+		System.out.println(usersManger.size());
+		
+		Type listeTypedto = new TypeToken<List<UserDto>>() {}.getType();
+		List<UserDto> usersDto = new ModelMapper().map(usersManger,listeTypedto);
+		Type listeType = new TypeToken<List<UserRepance>>() {}.getType();
+		List<UserRepance> usersResponse = new ModelMapper().map(usersDto,listeType);
+		return new ResponseEntity<List<UserRepance>>(usersResponse , HttpStatus.OK);
+	}
+	
+
+	
 
 }

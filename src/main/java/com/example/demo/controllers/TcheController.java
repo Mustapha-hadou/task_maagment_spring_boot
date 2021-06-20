@@ -93,15 +93,9 @@ public class TcheController {
 	public ResponseEntity<List<TacheResponse>> getTachesEmployes(Principal idEmploye) {
 		
 		List<TacheDto> dtoTaches=tacheService.getTacheByidEmploye(idEmploye.getName());
-		
-		System.out.println("dtoTaches"+dtoTaches.size());
-		System.out.println(dtoTaches.get(0).getId());
-
 		Type listType=new TypeToken<List<TacheResponse>>() {}.getType();
 		List<TacheResponse> tacheResponse=new ModelMapper().map(dtoTaches,listType);
 		
-		System.out.println("tacheResponse"+tacheResponse.size());
-		System.out.println(tacheResponse.get(0).getTache_id());
 
 		for(int i=0;i<tacheResponse.size();i++) {
 			tacheResponse.get(i).setProjet(dtoTaches.get(i).getProjet().getTitre());
@@ -110,15 +104,12 @@ public class TcheController {
 			String id=tacheResponse.get(i).getTache_id();
 			
 			List<AvancementTacheDto> listeAvancement=avancementTacheService.getAvancementTacheByidTache(id);
-			
-			System.out.println("listeAvancement"+listeAvancement.size());
-
+		
 			
 			
 			Type listType2=new TypeToken<List<AvancementTacheResponse>>() {}.getType();
 			List<AvancementTacheResponse> avancementTacheResponse=new ModelMapper().map(listeAvancement,listType2);
 			
-			System.out.println("avancementTacheResponse"+avancementTacheResponse.size());
 
 			tacheResponse.get(i).setAvancementTache(avancementTacheResponse);
 		}

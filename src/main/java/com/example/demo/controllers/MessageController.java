@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.ProjetEntity;
 import com.example.demo.entities.TacheEntity;
+import com.example.demo.entities.UserEntity;
 import com.example.demo.repances.ProjetResponse;
 import com.example.demo.repository.ProjetRepository;
 import com.example.demo.repository.TacheRepository;
@@ -114,8 +115,14 @@ public class MessageController {
 			}
 				
 		}
-		
-		
 	}
+	
+
+	@PostMapping(path="/envoiyeMessage")
+	public void MessageEnvoye(@RequestBody MessageRequest msg,Principal principal) {
+		
+         System.out.print(msg.getEmail_rec());
+		mailService.send(principal.getName(),msg.getEmail_rec(), msg.getObjet(),msg.getContenu() );
+		}
 	
 }
