@@ -170,11 +170,13 @@ public class UserController {
 		return userReponse;
 	}
 	
-	@PutMapping(path="/{mdp}")
+	@PutMapping(path="updateUserMDP/{mdp}")
 	public UserRepance updateUserMDP(@PathVariable String mdp,Principal principal) {
 		UserDto userDto = userService.getUser(principal.getName());
-		
+		System.out.println(userDto.getEncryptepassword());
+
 		userDto.setEncryptepassword(bCryptPasswordEncoder.encode(mdp));
+		System.out.println(userDto.getEncryptepassword());
 
 
 		UserDto userupdate = userService.UpdateUser(userDto.getUserId(),userDto);
