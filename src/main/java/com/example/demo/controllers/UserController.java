@@ -155,6 +155,17 @@ public class UserController {
 		
 	}
 	
+	@GetMapping(path="/infosUtili")
+	public UserRepance getUserConnecte(Principal principal) {
+		System.out.print("hehhe");
+		UserDto userDto = userService.getUser(principal.getName());
+		UserRepance userReponse = new UserRepance();
+		
+		BeanUtils.copyProperties(userDto, userReponse);
+		
+		return userReponse;
+	}
+	
 	
 	
 
