@@ -86,6 +86,12 @@ public class TacheServiceImpl implements TacheService{
 		Type listType=new TypeToken<List<TacheDto>>() {}.getType();
 		List<TacheDto>  listesTchesDto=new ModelMapper().map(listTaches,listType);
 		
+		for(int i=0;i<listesTchesDto.size();i++ ) {
+			if(listesTchesDto.get(i).getStatus().equals("Cancelled")) {
+				listesTchesDto.remove(i);
+			}
+		}
+		
 		return listesTchesDto;
 	}
 

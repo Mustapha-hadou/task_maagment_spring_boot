@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
 		UserEntity userEntity = new UserEntity();
 		BeanUtils.copyProperties(userDto, userEntity);
 		String password = util.generateStringId(8);
+		System.out.println(password);
 		userEntity.setUserId(util.generateStringId(32));
 		if(userEntity.getRole().equals("ADMIN")) {	
 			ModelMapper modelMapper=new ModelMapper();
