@@ -131,7 +131,8 @@ public class UserServiceImpl implements UserService {
 		userEntity.setAge(userDto.getAge());
 		userEntity.setEmail(userDto.getEmail());
 		userEntity.setTelephone(userDto.getTelephone());
-		
+		userEntity.setEncryptepassword(userDto.getEncryptepassword());
+
 		UserEntity userUpdate = userRepository.save(userEntity);
 		
 		UserDto user = new UserDto();
