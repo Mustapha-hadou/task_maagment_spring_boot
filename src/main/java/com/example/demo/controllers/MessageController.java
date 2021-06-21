@@ -62,21 +62,25 @@ public class MessageController {
     List<ProjetEntity> projets = projetRepository.findAll();
 		
 		for(int i = 0; i < projets.size(); i++) {
-			if(projets.get(i).getStatus() != "Finished" && projets.get(i).getStatus() != "Cancelled") {
-				long millis = projets.get(i).getDate_fin().getTime();
-				
-				System.out.println(projets.get(i).getDate_fin().getTime()  - System.currentTimeMillis());
-				if(System.currentTimeMillis() - projets.get(i).getDate_fin().getTime() == 172800000) {
+			if(!projets.get(i).getStatus().equals("Finished") && !projets.get(i).getStatus().equals("Cancelled")) {
+
+				Long dateBeteen = projets.get(i).getDate_fin().getTime() - System.currentTimeMillis();
+				System.out.println(projets.get(i).getTitre()+ " : "+projets.get(i).getStatus()+"  : "+dateBeteen);
+
+				// 172800000 => 2 days in Millis
+				if(dateBeteen >0 && dateBeteen <= 172800000) {
+					
 					mailService.send(projets.get(i).getAdmin().getEmail(),projets.get(i).getManager().getEmail(), "finaliser Projet", "salut ! , " +projets.get(i).getManager().getNom()
 					        + "\n\n il vous reste moins de deux jours pour finir projet de "+projets.get(i).getTitre());
 				}
-				if(System.currentTimeMillis() - projets.get(i).getDate_fin().getTime() == 0) {
+				if(dateBeteen <= 0) {
 					String status = "" ;
-					if(!projets.get(i).getStatus().equals("Finished")){
 						status = "Cancelled";
 						projets.get(i).setStatus(status);
 						projetRepository.save(projets.get(i));
-					}
+						mailService.send(projets.get(i).getAdmin().getEmail(),projets.get(i).getManager().getEmail(), "Cancel Projet", "salut ! , " +projets.get(i).getManager().getNom()
+						        + "\n\n project cancelled "+projets.get(i).getTitre());
+					
 				}
 				
 					

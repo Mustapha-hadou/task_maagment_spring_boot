@@ -14,6 +14,8 @@ import com.example.demo.entities.UserEntity;
 public interface MnagerRepository extends  CrudRepository<ManagerEntity, Long> {
 
 	List<UserEntity> findByAdmin(AdminEntity admin);
+	
+	UserEntity findByUserId(String id);	
 
 }
 

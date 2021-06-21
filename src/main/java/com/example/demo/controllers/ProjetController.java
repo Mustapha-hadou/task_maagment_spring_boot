@@ -34,6 +34,7 @@ import com.example.demo.repances.AvancementTacheResponse;
 import com.example.demo.repances.ProjetResponse;
 import com.example.demo.repances.TacheResponse;
 import com.example.demo.repances.UserRepance;
+import com.example.demo.repository.MnagerRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.requests.ProjetRequest;
 import com.example.demo.requests.TacheRequest;
@@ -62,6 +63,9 @@ public class ProjetController {
 	UserRepository userRepository;
 	
 	@Autowired
+	MnagerRepository mangerRepository;
+	
+	@Autowired
 	AvancementProjetService avanprojetService;
 	
 	@Autowired
@@ -80,7 +84,7 @@ public class ProjetController {
 	 
 	@PostMapping(path="/{idManager}")
 	public void createProjet(@RequestBody ProjetRequest projetRequest,Principal principal,@PathVariable String idManager) throws IOException {	
-		UserEntity manager =  userRepository.findByUserId(idManager);
+		UserEntity manager =  mangerRepository.findByUserId(idManager);
 		System.out.println(principal.getName());
 		System.out.println(manager.getEmail());
 
@@ -229,16 +233,13 @@ public class ProjetController {
 	
 	@GetMapping("/admin/{emailAdmin}")
 	public ResponseEntity<List<ProjetResponse>> getProjetByAdmin(@PathVariable(name="emailAdmin") String adminEmail) {
-		
-
 		List<ProjetDto> dtoProjets=projetService.getProjetAdmin(adminEmail);
-				
-
 		Type listType=new TypeToken<List<ProjetResponse>>(){}.getType();
+
 		List<ProjetResponse> responseProjets=new ModelMapper().map(dtoProjets,listType);
-		System.out.println(responseProjets.size());
+		List<String> ids = new ArrayList<>();
 		for(int i=0;i<responseProjets.size();i++) {
-			
+			// ids.add(dtoProjets.get(i).getPrjet_id());
 			List<Avancemen_ProjettDto> liste=avanprojetService.getAvancementProjetByidProjet(dtoProjets.get(i).getPrjet_id());
 			
 			Type listType2=new TypeToken<List<Avancemen_ProjettResponse>>(){}.getType();
@@ -247,7 +248,6 @@ public class ProjetController {
 			
 			responseProjets.get(i).setAvancementsProjet(avancementProjetResponse);
 		}
-	
 		return new ResponseEntity<List<ProjetResponse>>(responseProjets, HttpStatus.OK);		
 	}
 
